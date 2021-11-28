@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Layout : MonoBehaviour
+public struct Layout
 {
     public readonly Orientation Orientation;
     public readonly Point Size;

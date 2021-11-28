@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Orientation : MonoBehaviour
+public struct Orientation
 {
     public readonly double F0;
     public readonly double F1;
@@ -14,15 +14,15 @@ public class Orientation : MonoBehaviour
     public readonly double B3;
     public readonly double StartAngle;
 
-    public readonly Orientation Layout_pointy = 
-        new Orientation(Mathf.Sqrt(3.0f), Mathf.Sqrt(3.0f) / 2.0, 0.0, 3.0 / 2.0,
-                Mathf.Sqrt(3.0f) / 3.0, -1.0 / 3.0, 0.0, 2.0 / 3.0,
-                0.5);
+    //public readonly Orientation Layout_pointy = 
+    //    new Orientation(Mathf.Sqrt(3.0f), Mathf.Sqrt(3.0f) / 2.0, 0.0, 3.0 / 2.0,
+    //            Mathf.Sqrt(3.0f) / 3.0, -1.0 / 3.0, 0.0, 2.0 / 3.0,
+    //            0.5);
 
-    public readonly Orientation Layout_Flat = 
-        new Orientation(3.0 / 2.0, 0.0, Mathf.Sqrt(3.0f) / 2.0, Mathf.Sqrt(3.0f),
-                2.0 / 3.0, 0.0, -1.0 / 3.0, Mathf.Sqrt(3.0f) / 3.0,
-                0.0);
+    //public readonly Orientation Layout_Flat = 
+    //    new Orientation(3.0 / 2.0, 0.0, Mathf.Sqrt(3.0f) / 2.0, Mathf.Sqrt(3.0f),
+    //            2.0 / 3.0, 0.0, -1.0 / 3.0, Mathf.Sqrt(3.0f) / 3.0,
+    //            0.0);
 
     public Orientation(double f0, double f1, double f2, double f3, 
         double b0, double b1, double b2, double b3, double startAngle)

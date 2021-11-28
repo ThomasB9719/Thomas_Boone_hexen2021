@@ -4,7 +4,7 @@ using System;
 using System.Linq;
 using UnityEngine;
 
-public class Hex : MonoBehaviour
+public struct Hex
 {
     public readonly int Q;
     public readonly int R;

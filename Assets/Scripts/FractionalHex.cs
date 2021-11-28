@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-public class FractionalHex : MonoBehaviour
+public struct FractionalHex 
 {
     public readonly double Q;
     public readonly double R;

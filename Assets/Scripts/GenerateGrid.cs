@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,28 +6,49 @@ using UnityEngine;
 public class GenerateGrid : MonoBehaviour
 {
     [SerializeField]
-    private Hex _hex;
+    private GameObject _hexModel;
 
-    //[SerializeField]
-    //private Orientation _orientation;
+    [SerializeField]
+    private int _mapWidth = 11;
 
-    //[SerializeField]
-    //private Layout _layout;
+    [SerializeField]
+    private int _mapHeight = 11;
 
-    //[SerializeField]
-    //private Point _point;
+    [SerializeField]
+    private float _xOffset = 1;
+
+    [SerializeField]
+    private float _zOffset = 1;
 
     private void Start()
     {
-        for (int i = 0; i < 3; i++)
+        CreateHexTiles();
+    }
+
+    private void CreateHexTiles()
+    {
+        for (int x = 0; x < _mapWidth; x++)
         {
-            for (int j = 0; j > -3; j--)
+            for (int z = 0; z < _mapHeight; z++)
             {
-                Hex hex = new Hex(i, 0, j);
-                _hex.Add(hex);
-                Debug.Log(i);
-                Debug.Log(j);
+                GameObject hex = Instantiate(_hexModel);
+
+                if (z % 2 == 0)
+                {
+                    hex.transform.position = new Vector3(x * _xOffset, 0, z * _zOffset);
+                }
+                else
+                {
+                    hex.transform.position = new Vector3(x * _xOffset + _xOffset / 2, 0, z * _zOffset);
+                }
+                GiveHexInfo(hex, x, z);
             }
         }
+    }
+
+    private void GiveHexInfo(GameObject hex, int x, int z)
+    {
+        hex.transform.parent = this.transform;
+        hex.name = x.ToString() + ", " + z.ToString();
     }
 }
