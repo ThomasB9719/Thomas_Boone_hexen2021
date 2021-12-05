@@ -1,0 +1,16 @@
+{
+    "name": "DAE.SelectionSystem",
+    "rootNamespace": "",
+    "references": [
+        "GUID:93ab2f664b687e74e868628e2350ae65"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

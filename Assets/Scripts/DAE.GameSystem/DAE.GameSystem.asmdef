@@ -1,0 +1,18 @@
+{
+    "name": "DAE.GameSystem",
+    "rootNamespace": "",
+    "references": [
+        "GUID:93ab2f664b687e74e868628e2350ae65",
+        "GUID:f1026903c8248b441bb4bef30cf2bc40",
+        "GUID:eadab32a6148ea94cb6ea52885bbb57f"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
