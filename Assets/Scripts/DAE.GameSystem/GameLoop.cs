@@ -7,9 +7,9 @@ using UnityEngine;
 using DAE.SelectionSystem;
 using DAE.BoardSystem;
 using DAE.HexesSystem;
-//using DAE.StateSystem;
+using DAE.StateSystem;
 using DAE.GameSystem;
-//using DAE.GameSystem.GameStates;
+using DAE.GameSystem.GameStates;
 
 namespace DAE.GameSystem
 {
@@ -17,10 +17,6 @@ namespace DAE.GameSystem
     class GameLoop: MonoBehaviour
     {
         //public delegate void PieceAction(Piece piece);
-
-        [SerializeField]
-        private GenerateGrid _generateGrid;
-        
         [SerializeField]
         private PositionHelper _positionHelper;
 
@@ -30,14 +26,21 @@ namespace DAE.GameSystem
         private SelectionManager<Piece> _selectionManager; //we keep it as a global variable so it doesn't get cleaned up!
         private Grid<Position> _grid;
         private Board<Position, Piece> _board;
-        //private MoveManager<Piece> _moveManager;
+        private MoveManager<Piece> _moveManager;
         //private StateMachine<GameStateBase> _gameStateMachine;
 
         public void Start()
         {
-            _grid = new Grid<Position>(/*8, 8*/);
+            _grid = new Grid<Position>(3);
             ConnectGrid(_grid);
             _board = new Board<Position, Piece>();
+
+            _moveManager = new MoveManager<Piece>(_board, _grid/*, _replayManager*/);
+
+            //_gameStateMachine = new StateMachine<GameStateBase>();
+
+            //var gameplayState = new GamePlayState(_gameStateMachine, _selectionManager, _board, _moveManager);
+            //_gameStateMachine.Register(GameState.GamePlayState, gameplayState);
 
             _selectionManager = new SelectionManager<Piece>();
             ConnectPiece(_selectionManager, _grid, _board);
@@ -52,9 +55,8 @@ namespace DAE.GameSystem
             {
                 if(_grid.TryGetCoordinateOf(e.ToPosition, out var toCoordinate))
                 {
-                    //var worldPosition = _positionHelper.ToWorldPosition
-                    //    (_grid, _boardParent, toCoordinate.x, toCoordinate.y);
-                    var worldPosition = _generateGrid.WorldCoordinates;                   
+                    var worldPosition = _positionHelper.ToWorldPosition
+                        (_grid, _boardParent, toCoordinate.x, toCoordinate.y);
 
                     //e.Piece.transform.position = worldPosition;
                     e.Piece.MoveTo(worldPosition);
@@ -65,9 +67,8 @@ namespace DAE.GameSystem
             {
                 if (_grid.TryGetCoordinateOf(e.ToPosition, out var toCoordinate))
                 {
-                    //var worldPosition = _positionHelper.ToWorldPosition
-                    //    (_grid, _boardParent, toCoordinate.x, toCoordinate.y);
-                    var worldPosition = _generateGrid.WorldCoordinates;
+                    var worldPosition = _positionHelper.ToWorldPosition
+                        (_grid, _boardParent, toCoordinate.x, toCoordinate.y);                 
                     e.Piece.Place(worldPosition);
                 }
             };
@@ -112,10 +113,10 @@ namespace DAE.GameSystem
 
         }
 
-        public void DeselectAll()
-        {
-            _selectionManager.DeselectAll();
-        }
+        //public void DeselectAll()
+        //{
+        //    _selectionManager.DeselectAll();
+        //}
 
         //public void OnPieceSelected(Piece piece)
         //{
@@ -130,6 +131,7 @@ namespace DAE.GameSystem
         private void ConnectGrid(Grid<Position> grid)
         {
             var views = FindObjectsOfType<PositionView>();
+            Debug.Log(views.Length);
             foreach (var view in views)
             {
                 //Debug.Log($"Value of Tile {view.name} is X: {x} and Y: {y}");
@@ -139,13 +141,12 @@ namespace DAE.GameSystem
                 view.Model = position;
                 //view.Clicked += (s, e) => _gameStateMachine.CurrentState.Select(e.Position);
 
-                //var (x,y) = _positionHelper.ToGridPosition(grid, _boardParent, view.transform.position);
-                var (x, y) = _generateGrid.GridCoordinates;
-                Debug.Log((x, y));
+                var (x, y) = _positionHelper.ToGridPosition(grid, _boardParent, view.transform.position);
 
-                grid.Register(x, y, position);
+                grid.Register((int)x, (int)y, position);
+                //Debug.Log($"{view} + {x} +  ,  + {y}");
 
-                view.gameObject.name = $"Tile ({x}, { y})";
+                //view.gameObject.name = $"Tile ({x}, {y})";
             }
         }
 
@@ -154,26 +155,31 @@ namespace DAE.GameSystem
             var pieces = FindObjectsOfType<Piece>();
             foreach (var piece in pieces)
             {
-                //var (x, y) = _positionHelper.ToGridPosition(grid, _boardParent, piece.transform.position);
-                var (x, y) = _generateGrid.GridCoordinates;
+                var (x, y) = _positionHelper.ToGridPosition(grid, _boardParent, piece.transform.position);
 
                 if (grid.TryGetPositionAt(x, y, out var position))
                 {
                     //piece.Callback = OnPieceSelected;
-                    //piece.Clicked += (s, e) => _gameStateMachine.CurrentState.Select(piece);
-                    //{
-                    //    selectionManager.DeselectAll();
-                    //    selectionManager.Toggle(s as Piece);
-                    //};
+                    piece.Clicked += (s, e) => /*_gameStateMachine.CurrentState.*//*Select(e.Piece);*/
+                    {
+                        selectionManager.DeselectAll();
+                        selectionManager.Toggle(s as Piece);
+                    };
 
                     //callback makes sure that if we click (action), something else will react
-                    //piece.Clicked += (s, e) => Debug.Log($"Piece clicked{e.Piece}");
+                    piece.Clicked += (s, e) => Debug.Log($"Piece clicked{e.Piece}");
 
                     board.Place(piece, position);
                 }
                 
             }
         }
+
+        //internal void Select(Piece piece)
+        //=> _gameStateMachine.CurrentState.Select(piece);
+
+        //internal void Select(Position position)
+        //=> _gameStateMachine.CurrentState.Select(position);
     }
 }
 

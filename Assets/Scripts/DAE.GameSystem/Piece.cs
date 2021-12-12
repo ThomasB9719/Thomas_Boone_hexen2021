@@ -16,16 +16,16 @@ class PieceEventArgs: EventArgs
     public PieceEventArgs(Piece piece) 
         => Piece = piece;
 }
-class Piece: MonoBehaviour, IPointerClickHandler/*, IPiece*/
+class Piece: MonoBehaviour, IPointerClickHandler, IPiece
 {
     [SerializeField]
     private HighLightEvent _onHighlight;
 
-    [SerializeField]
-    private int _playerID;
-
     //[SerializeField]
-    //private PieceType _pieceType;
+    //private int _playerID;
+
+    [SerializeField]
+    private PieceType _pieceType;
 
     public bool Highlight
     {
@@ -35,13 +35,13 @@ class Piece: MonoBehaviour, IPointerClickHandler/*, IPiece*/
         }
     }
 
-    public int PlayerID => _playerID;
+    //public int PlayerID => _playerID;
 
     //public string Name => gameObject.name;
 
     public bool Moved { get; set; }
 
-    //public PieceType PieceType => _pieceType;
+    public PieceType PieceType => _pieceType;
 
     //public event Action<Piece> Callback;
     public event EventHandler<PieceEventArgs> Clicked;

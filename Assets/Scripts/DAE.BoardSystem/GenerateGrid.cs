@@ -8,45 +8,32 @@ public class GenerateGrid : MonoBehaviour
     [SerializeField]
     private GameObject _hexModel;
 
-    [SerializeField]
-    private int _mapRadius = 11;
+    public int MapRadius = 3;
 
     private float _distance = 2.05f;
-    public (int x, int y) GridCoordinates;
-    public Vector3 WorldCoordinates;
 
-    private void Start()
+    private void Awake()
     {
         CreateHexTiles();
     }
 
     private void CreateHexTiles()
     {
-        for (int q = -_mapRadius; q <= _mapRadius; q++)
+        for (int q = -MapRadius; q <= MapRadius; q++)
         {
-            int r1 = Mathf.Max(-_mapRadius, -q - _mapRadius);
-            int r2 = Mathf.Min(_mapRadius, -q + _mapRadius);
+            int r1 = Mathf.Max(-MapRadius, -q - MapRadius);
+            int r2 = Mathf.Min(MapRadius, -q + MapRadius);
 
             for (int r = r1; r <= r2; r++)
             {
                 var x = _distance * (Mathf.Sqrt(3f) * q + Mathf.Sqrt(3f) / 2f * r);
                 var y = _distance * (3f / 2f * r);
+
                 GameObject hexInstance = Instantiate(_hexModel, new Vector3(x, 0, y), Quaternion.identity);
+
                 GiveHexInfo(hexInstance, x, y, q, r);
-                GiveWorldPosition(x, y);
-                GiveGridPosition(q, r);
             }
         }
-    }
-
-    public void GiveGridPosition(int q, int r)
-    {
-        GridCoordinates = (q, r);
-    }
-
-    public void GiveWorldPosition(float x, float y)
-    {
-        WorldCoordinates = new Vector3(x, 0, y);
     }
 
     private void GiveHexInfo(GameObject hex, float x, float z, int q, int r)
