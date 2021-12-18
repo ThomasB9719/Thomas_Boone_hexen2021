@@ -8,10 +8,10 @@ using System.Threading.Tasks;
 
 namespace DAE.HexesSystem.Moves
 {
-    class ConfigurableMove<TPiece> : MoveBase<TPiece>
+    class ConfigurableMove<TPosition, TPiece> : MoveBase<TPosition,TPiece>
         where TPiece : IPiece
     {
-        public delegate List<Position> PositionCollector(Board<Position, TPiece> board, Grid<Position> grid, TPiece piece);
+        public delegate List<TPosition> PositionCollector(Board<TPosition, TPiece> board, Grid<TPosition> grid, TPiece piece);
 
         private PositionCollector _positionCollector;
 
@@ -20,7 +20,7 @@ namespace DAE.HexesSystem.Moves
             _positionCollector = positionCollector;
         }
 
-        public override List<Position> Positions(Board<Position, TPiece> board, Grid<Position> grid, TPiece piece)
+        public override List<TPosition> Positions(Board<TPosition, TPiece> board, Grid<TPosition> grid, TPiece piece)
             => _positionCollector(board, grid, piece);
     }
 }

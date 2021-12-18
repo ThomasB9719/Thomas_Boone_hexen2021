@@ -9,7 +9,7 @@ namespace DAE.GameSystem.GameStates
     {
         private SelectionManager<Piece> _selectionManager; //we keep it as a global variable so it doesn't get cleaned up!
         //private Grid<Position> _grid;
-        private MoveManager<Piece> _moveManager;
+        private MoveManager<Position,Piece> _moveManager;
         private Board<Position, Piece> _board;
 
         //private int _currentPlayerID = 0;
@@ -17,7 +17,7 @@ namespace DAE.GameSystem.GameStates
         public GamePlayState(StateMachine<GameStateBase> stateMachine,
                 SelectionManager<Piece> selectionManager,
                 Board<Position, Piece> board,
-                MoveManager<Piece> moveManager) : base(stateMachine)
+                MoveManager<Position, Piece> moveManager) : base(stateMachine)
         {
             _selectionManager = selectionManager;
             _moveManager = moveManager;
@@ -105,7 +105,7 @@ namespace DAE.GameSystem.GameStates
             var positions = _moveManager.ValidPositionFor(eventArgs.SelectableItem);
             foreach (var position in positions)
             {
-                position.Activate();
+                position.Activated();
             }
         }
 
@@ -114,7 +114,7 @@ namespace DAE.GameSystem.GameStates
             var positions = _moveManager.ValidPositionFor(eventArgs.SelectableItem);
             foreach (var position in positions)
             {
-                position.Deactivate();
+                position.Deactivated();
             }
         }
 

@@ -8,7 +8,7 @@ using DAE.BoardSystem;
 
 namespace DAE.HexesSystem
 {
-    abstract class MoveBase<TPiece> : IMove<TPiece>
+    abstract class MoveBase<TPosition,TPiece> : IMove<TPosition, TPiece>
         where TPiece : IPiece
     {
         //protected ReplayManager ReplayManager;
@@ -18,12 +18,12 @@ namespace DAE.HexesSystem
         //    ReplayManager = replayManager;
         //}
 
-        public virtual bool CanExecute(Board<Position, TPiece> board, Grid<Position> grid, TPiece piece)
+        public virtual bool CanExecute(Board<TPosition, TPiece> board, Grid<TPosition> grid, TPiece piece)
         {
             return true;
         }
 
-        public virtual void Execute(Board<Position, TPiece> board, Grid<Position> grid, TPiece piece, Position position)
+        public virtual void Execute(Board<TPosition, TPiece> board, Grid<TPosition> grid, TPiece piece, TPosition position)
         {
             var hasEnemyPiece = board.TryGetPieceAt(position, out var toPiece);
             board.TryGetPositionOf(piece, out var fromPosition);
@@ -46,6 +46,6 @@ namespace DAE.HexesSystem
             //ReplayManager.Execute(new DelegateReplayCommand(forward, backward));
         }
 
-        public abstract List<Position> Positions(Board<Position, TPiece> board, Grid<Position> grid, TPiece piece);
+        public abstract List<TPosition> Positions(Board<TPosition, TPiece> board, Grid<TPosition> grid, TPiece piece);
     }
 }

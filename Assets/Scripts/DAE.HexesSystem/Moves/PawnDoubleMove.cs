@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace DAE.HexesSystem.Moves
 {
-    class PawnDoubleMove<TPiece> : MoveBase<TPiece>
+    class PawnDoubleMove<TPosition, TPiece> : MoveBase<TPosition, TPiece>
         where TPiece : IPiece
     {
         public PawnDoubleMove(/*ReplayManager replayManager*/) /*:base(replayManager)*/
@@ -16,7 +16,7 @@ namespace DAE.HexesSystem.Moves
 
         }
 
-        public override bool CanExecute(Board<Position, TPiece> board, Grid<Position> grid, TPiece piece)
+        public override bool CanExecute(Board<TPosition, TPiece> board, Grid<TPosition> grid, TPiece piece)
         {
             if (piece.Moved)
                 return false;
@@ -43,24 +43,24 @@ namespace DAE.HexesSystem.Moves
 
        
 
-        public override List<Position> Positions(Board<Position, TPiece> board, Grid<Position> grid, TPiece piece)
+        public override List<TPosition> Positions(Board<TPosition, TPiece> board, Grid<TPosition> grid, TPiece piece)
         {
             if (!board.TryGetPositionOf(piece, out var position))
-                return new List<Position>(0);
+                return new List<TPosition>(0);
 
             if (!grid.TryGetCoordinateOf(position, out var coordinate))
-                return new List<Position>(0);
+                return new List<TPosition>(0);
 
             //coordinate.y += (piece.PlayerID == 0) ? 2 : -2;
 
             if (grid.TryGetPositionAt(coordinate.x, coordinate.y, out var newPosition))
-                return new List<Position>() { newPosition };
+                return new List<TPosition>() { newPosition };
             else
-                return new List<Position>(0);
+                return new List<TPosition>(0);
 
         }
 
-        private bool IsEmpty(Board<Position, TPiece> board, Grid<Position> grid, TPiece piece, int x, int y)
+        private bool IsEmpty(Board<TPosition, TPiece> board, Grid<TPosition> grid, TPiece piece, int x, int y)
         {
             if (!grid.TryGetPositionAt(x, y, out var position))
                 return false;

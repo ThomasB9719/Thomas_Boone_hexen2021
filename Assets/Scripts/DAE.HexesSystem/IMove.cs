@@ -7,13 +7,13 @@ using System.Threading.Tasks;
 
 namespace DAE.HexesSystem
 {
-    interface IMove<TPiece>
+    interface IMove<TPosition,TPiece>
         where TPiece : IPiece
     {
-        bool CanExecute(Board<Position, TPiece> board, Grid<Position> grid, TPiece piece);
+        bool CanExecute(Board<TPosition, TPiece> board, Grid<TPosition> grid, TPiece piece);
 
-        void Execute(Board<Position, TPiece> board, Grid<Position> grid, TPiece piece, Position position);
+        void Execute(Board<TPosition, TPiece> board, Grid<TPosition> grid, TPiece piece, TPosition position);
 
-        List<Position> Positions(Board<Position, TPiece> board, Grid<Position> grid, TPiece piece);
+        List<TPosition> Positions(Board<TPosition, TPiece> board, Grid<TPosition> grid, TPiece piece);
     }
 }

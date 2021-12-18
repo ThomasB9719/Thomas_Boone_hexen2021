@@ -17,7 +17,7 @@ public class PositionEventArgs: EventArgs
     }
 }
 
-public class PositionView : MonoBehaviour, IPointerClickHandler
+public class Position : MonoBehaviour, IPointerClickHandler
 {
     [SerializeField]
     private UnityEvent OnActivate;
@@ -30,40 +30,18 @@ public class PositionView : MonoBehaviour, IPointerClickHandler
     //[SerializeField]
     //private GameLoop<Piece> _loop;
 
-    private Position _model;
-    public Position Model
-    {
-        get
-        {
-            return _model;
-        }
-        set
-        {
-            if (_model != null)
-            {
-                _model.Activated -= PositionActivated;
-                _model.Deactivated -= PositionDeactivated;
-            }
-            
-            _model = value;
-            if (_model != null)
-            {
-                _model.Activated += PositionActivated;
-                _model.Deactivated += PositionDeactivated;
-            }
-        }
-    }
 
-    private void PositionDeactivated(object sender, EventArgs e)
+    public void Deactivated()
         => OnDeactivate.Invoke();
 
-    private void PositionActivated(object sender, EventArgs e)
+    public void Activated()
         => OnActivate.Invoke();
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        //Debug.Log($"Clicked { gameObject.name}");
-        OnClicked(new PositionEventArgs(Model));
+        Debug.Log($"Clicked { gameObject.name}");
+        //Activated();
+        OnClicked(new PositionEventArgs(this));
     }
 
     public virtual void OnClicked(PositionEventArgs eventArgs)

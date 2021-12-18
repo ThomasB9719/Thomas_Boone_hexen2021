@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace DAE.HexesSystem
 {
     //[DebuggerDisplay]
-    public class Position
+    public class PositionNotNeeded
     {
         public event EventHandler Activated;
         public event EventHandler Deactivated;

@@ -14,7 +14,7 @@ using DAE.GameSystem.GameStates;
 namespace DAE.GameSystem
 {
 
-    class GameLoop: MonoBehaviour
+    class GameLoop : MonoBehaviour
     {
         //public delegate void PieceAction(Piece piece);
         [SerializeField]
@@ -26,7 +26,7 @@ namespace DAE.GameSystem
         private SelectionManager<Piece> _selectionManager; //we keep it as a global variable so it doesn't get cleaned up!
         private Grid<Position> _grid;
         private Board<Position, Piece> _board;
-        private MoveManager<Piece> _moveManager;
+        private MoveManager<Position,Piece> _moveManager;
         //private StateMachine<GameStateBase> _gameStateMachine;
 
         public void Start()
@@ -35,7 +35,7 @@ namespace DAE.GameSystem
             ConnectGrid(_grid);
             _board = new Board<Position, Piece>();
 
-            _moveManager = new MoveManager<Piece>(_board, _grid/*, _replayManager*/);
+            _moveManager = new MoveManager<Position, Piece>(_board, _grid/*, _replayManager*/);
 
             //_gameStateMachine = new StateMachine<GameStateBase>();
 
@@ -53,7 +53,7 @@ namespace DAE.GameSystem
 
             _board.Moved += (s, e) =>
             {
-                if(_grid.TryGetCoordinateOf(e.ToPosition, out var toCoordinate))
+                if (_grid.TryGetCoordinateOf(e.ToPosition, out var toCoordinate))
                 {
                     var worldPosition = _positionHelper.ToWorldPosition
                         (_grid, _boardParent, toCoordinate.x, toCoordinate.y);
@@ -68,7 +68,7 @@ namespace DAE.GameSystem
                 if (_grid.TryGetCoordinateOf(e.ToPosition, out var toCoordinate))
                 {
                     var worldPosition = _positionHelper.ToWorldPosition
-                        (_grid, _boardParent, toCoordinate.x, toCoordinate.y);                 
+                        (_grid, _boardParent, toCoordinate.x, toCoordinate.y);
                     e.Piece.Place(worldPosition);
                 }
             };
@@ -78,29 +78,30 @@ namespace DAE.GameSystem
                 e.Piece.Taken();
             };
 
-            //    _selectionManager.Selected += (s, e) =>
-            //    {
-            //        //if (_board.TryGetPositionOf(e.SelectableItem, out var tile))
-            //        //{
-            //        //    Debug.Log($"Piece {e.SelectableItem} on tile ${tile.gameObject.name}");
-            //        //}
+            _selectionManager.Selected += (s, e) =>
+            {
+                if (_board.TryGetPositionOf(e.SelectableItem, out var position))
+                {
+                    position.Activated();
+                    Debug.Log($"Piece {e.SelectableItem} on tile ${position.gameObject.name}");
+                }
 
-            //        //highlight
-            //        var positions = _moveManager.ValidPositionFor(e.SelectableItem);
-            //        foreach (var position in positions)
-            //        {
-            //            position.Activate();
-            //        }
-            //    };
+               ////highlight
+               //var positions = _moveManager.ValidPositionFor(e.SelectableItem);
+               //foreach (var position in positions)
+               //{
+               //    position.Activated();
+               //}
+            };
 
-            //    _selectionManager.Deselected += (s, e) =>
-            //    {
-            //        var positions = _moveManager.ValidPositionFor(e.SelectableItem);
-            //        foreach (var position in positions)
-            //        {
-            //            position.Deactivate();
-            //        }
-            //    };
+            _selectionManager.Deselected += (s, e) =>
+            {
+                var positions = _moveManager.ValidPositionFor(e.SelectableItem);
+                foreach (var position in positions)
+                {
+                    position.Deactivated();
+                }
+            };
             //}
 
             //public void Activate()
@@ -130,18 +131,17 @@ namespace DAE.GameSystem
 
         private void ConnectGrid(Grid<Position> grid)
         {
-            var views = FindObjectsOfType<PositionView>();
-            Debug.Log(views.Length);
-            foreach (var view in views)
+            var positions = FindObjectsOfType<Position>();
+            Debug.Log(positions.Length);
+            foreach (var position in positions)
             {
                 //Debug.Log($"Value of Tile {view.name} is X: {x} and Y: {y}");
 
                 //TODO: attach model to view
-                var position = new Position();
-                view.Model = position;
+               
                 //view.Clicked += (s, e) => _gameStateMachine.CurrentState.Select(e.Position);
 
-                var (x, y) = _positionHelper.ToGridPosition(grid, _boardParent, view.transform.position);
+                var (x, y) = _positionHelper.ToGridPosition(grid, _boardParent, position.transform.position);
 
                 grid.Register((int)x, (int)y, position);
                 //Debug.Log($"{view} + {x} +  ,  + {y}");
@@ -171,7 +171,7 @@ namespace DAE.GameSystem
 
                     board.Place(piece, position);
                 }
-                
+
             }
         }
 
