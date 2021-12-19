@@ -11,6 +11,10 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: b554bd0674ff50a4a940995bd79995bb, type: 2}
+    - target: {fileID: 4146228923675037345, guid: cd1ce22b19cb5534d9acb23db35fb0ca, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5256197490859312129, guid: cd1ce22b19cb5534d9acb23db35fb0ca, type: 3}
       propertyPath: m_Name
       value: Character_Enemy
@@ -21,7 +25,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5256197490859312134, guid: cd1ce22b19cb5534d9acb23db35fb0ca, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: -3.55
       objectReference: {fileID: 0}
     - target: {fileID: 5256197490859312134, guid: cd1ce22b19cb5534d9acb23db35fb0ca, type: 3}
       propertyPath: m_LocalPosition.y

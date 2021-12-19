@@ -1,12 +1,14 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
+using System.Text;
+using System.Threading.Tasks;
 using DAE.BoardSystem;
 
 namespace DAE.HexesSystem.Moves
 {
-    class MovementHelper<TPosition,TPiece>
-        where TPiece : IPiece
+    class ActionHelper<TCard, TPosition, TPiece> where TPiece : IPiece
     {
         private Board<TPosition, TPiece> _board;
         private Grid<TPosition> _grid;
@@ -24,72 +26,28 @@ namespace DAE.HexesSystem.Moves
             new Vector2(0,1)
         };
 
-        public MovementHelper(Board<TPosition, TPiece> board, Grid<TPosition> grid, TPiece piece)
-        {
-            _board = board;
-            _grid = grid;
-            _piece = piece;
-        }
-
-        //public MovementHelper<TPosition,TPiece> North(int numTiles = int.MaxValue, params Validator[] validators)
-        //    => Move(0, 1, numTiles, validators);
-
-
-        public MovementHelper<TPosition, TPiece> SouthEast(int numTiles = int.MaxValue, params Validator[] validators)
-        {
-            return Move(1, -1, numTiles, validators);
-        }
-
-        public MovementHelper<TPosition, TPiece> East(int numTiles = int.MaxValue, params Validator[] validators)
-        {
-            return Move(1, 0, numTiles, validators);
-        }
-
-        public MovementHelper<TPosition, TPiece> NorthEast(int numTiles = int.MaxValue, params Validator[] validators)
-        {
-            return Move(0, 1, numTiles, validators);
-        }
-
-        //public MovementHelper<TPosition, TPiece> South(int numTiles = int.MaxValue, params Validator[] validators)
-        //{
-        //    return Move(0, -1, numTiles, validators);
-        //}
-
-        public MovementHelper<TPosition, TPiece> NorthWest(int numTiles = int.MaxValue, params Validator[] validators)
-        {
-            return Move(-1, 1, numTiles, validators);
-        }
-
-        public MovementHelper<TPosition, TPiece> West(int numTiles = int.MaxValue, params Validator[] validators)
-        {
-            return Move(-1, 0, numTiles, validators);
-        }
-
-        public MovementHelper<TPosition, TPiece> SouthWest(int numTiles = int.MaxValue, params Validator[] validators)
-        {
-            return Move(0, -1, numTiles, validators);
-        }
-
-        public MovementHelper<TPosition, TPiece> CaptureNorthEast()
-        {
-            return this;
-        }
-
-        public MovementHelper<TPosition, TPiece> CaptureNorthWest()
-        {
-            return this;
-        }
-
         public delegate bool Validator(Board<TPosition, TPiece> board, Grid<TPosition> grid, TPiece piece, TPosition position);
 
-        public MovementHelper<TPosition,TPiece> Move(int xOffset, int yOffset, int numTiles = int.MaxValue, params Validator[] validators)
-        {
-            //if (_piece.PlayerID == 1) //black
-            //{
-            //    xOffset *= -1;
-            //    yOffset *= -1;
-            //}
+        internal ActionHelper<TCard, TPosition, TPiece> East(int numTiles = int.MaxValue, params Validator[] validators)
+          => CardMove((int)Directions[0].X, (int)Directions[0].Y, numTiles, validators);
 
+        internal ActionHelper<TCard, TPosition, TPiece> SouthEast(int numTiles = int.MaxValue, params Validator[] validators)
+          => CardMove((int)Directions[1].X, (int)Directions[1].Y, numTiles, validators);
+
+        internal ActionHelper<TCard, TPosition, TPiece> SouthWest(int numTiles = int.MaxValue, params Validator[] validators)
+         => CardMove((int)Directions[2].X, (int)Directions[2].Y, numTiles, validators);
+
+        internal ActionHelper<TCard, TPosition, TPiece> West(int numTiles = int.MaxValue, params Validator[] validators)
+        => CardMove((int)Directions[3].X, (int)Directions[3].Y, numTiles, validators);
+
+        internal ActionHelper<TCard, TPosition, TPiece> NorthWest(int numTiles = int.MaxValue, params Validator[] validators)
+       => CardMove((int)Directions[4].X, (int)Directions[4].Y, numTiles, validators);
+
+        internal ActionHelper<TCard, TPosition, TPiece> NorthEast(int numTiles = int.MaxValue, params Validator[] validators)
+     => CardMove((int)Directions[5].X, (int)Directions[5].Y, numTiles, validators);
+
+        public ActionHelper<TCard, TPosition, TPiece> CardMove(int xOffset, int yOffset, int numTiles = int.MaxValue, params Validator[] validators)
+        {
             if (!_board.TryGetPositionOf(_piece, out var position))
                 return this;
             if (!_grid.TryGetCoordinateOf(position, out var coordinate))
@@ -153,6 +111,5 @@ namespace DAE.HexesSystem.Moves
 
         public static bool HasEnemyPiece(Board<TPosition, TPiece> board, Grid<TPosition> grid, TPiece piece, TPosition position)
             => board.TryGetPieceAt(position, out var enemyPiece) /*&& enemyPiece.PlayerID != piece.PlayerID*/;
-
     }
 }

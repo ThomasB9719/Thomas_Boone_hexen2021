@@ -8,7 +8,7 @@ using DAE.BoardSystem;
 
 namespace DAE.HexesSystem
 {
-    abstract class MoveBase<TPosition,TPiece> : IMove<TPosition, TPiece>
+    abstract class MoveBase<TPosition, TPiece> : IMove<TPosition, TPiece>
         where TPiece : IPiece
     {
         //protected ReplayManager ReplayManager;
@@ -25,23 +25,29 @@ namespace DAE.HexesSystem
 
         public virtual void Execute(Board<TPosition, TPiece> board, Grid<TPosition> grid, TPiece piece, TPosition position)
         {
-            var hasEnemyPiece = board.TryGetPieceAt(position, out var toPiece);
-            board.TryGetPositionOf(piece, out var fromPosition);
+            if (board.TryGetPieceAt(position, out var toPiece))
+                board.Take(toPiece);
 
-            Action forward = () =>
-            {
-                if (hasEnemyPiece)
-                    board.Take(toPiece);
-                board.Move(piece, position);
-            };
+            board.Move(piece, position);
 
-            Action backward = () =>
-            {
-                board.Move(piece, fromPosition);
+            
+            //var hasEnemyPiece = board.TryGetPieceAt(position, out var toPiece);
+            //board.TryGetPositionOf(piece, out var fromPosition);
 
-                if (hasEnemyPiece)
-                    board.Place(toPiece, position);
-            };
+            //Action forward = () =>
+            //{
+            //if (hasEnemyPiece)
+            //    board.Take(toPiece);
+            //board.Move(piece, position);
+            //};
+
+            //Action backward = () =>
+            //{
+            //board.Move(piece, fromPosition);
+
+            //if (hasEnemyPiece)
+            //    board.Place(toPiece, position);
+            //};
 
             //ReplayManager.Execute(new DelegateReplayCommand(forward, backward));
         }

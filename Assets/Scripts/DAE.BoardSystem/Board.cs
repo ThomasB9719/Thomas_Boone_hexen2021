@@ -70,16 +70,21 @@ namespace DAE.BoardSystem {
 
             return true;
         }
+
         public bool Move(TPiece piece, TPosition toPosition)
         {
             if (TryGetPieceAt(toPosition, out _))
             return false;
 
-            if (!TryGetPositionOf(piece, out var fromPosition) || !_positionPiece.Remove(piece))
+            if (!TryGetPositionOf(piece, out var fromPosition))
+                return false;
+
+            if (!_positionPiece.Remove(piece))
                 return false;
 
             _positionPiece.Add(toPosition, piece);
             OnMoved(new MovedEventArgs<TPosition, TPiece>(toPosition, fromPosition, piece));
+            
 
             return true;
         }
@@ -97,9 +102,7 @@ namespace DAE.BoardSystem {
                 return false;
             
             OnTaken(new TakenEventArgs<TPosition, TPiece>(fromPosition, piece));
-            return true;
-            
-            
+            return true;          
         }
 
         public bool TryGetPieceAt(TPosition position, out TPiece piece)

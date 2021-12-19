@@ -39,6 +39,6 @@ public class GenerateGrid : MonoBehaviour
     private void GiveHexInfo(GameObject hex, float x, float z, int q, int r)
     {
         hex.transform.parent = this.transform;
-        hex.name = "World" + x.ToString() + ", " + z.ToString() + "/ Grid " + q.ToString() + ", " + r.ToString();
+        hex.name = "World " + x.ToString() + ", " + z.ToString() + "/ Grid " + q.ToString() + ", " + r.ToString();
     }
 }

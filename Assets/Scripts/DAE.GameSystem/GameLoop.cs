@@ -80,18 +80,24 @@ namespace DAE.GameSystem
 
             _selectionManager.Selected += (s, e) =>
             {
-                if (_board.TryGetPositionOf(e.SelectableItem, out var position))
+                //if (_board.TryGetPositionOf(e.SelectableItem, out var position))
+                //{
+                //    position.Activated();
+                //    Debug.Log($"Piece {e.SelectableItem} on tile ${position.gameObject.name}");
+                //}
+
+                ////highlight
+                var positions = _moveManager.ValidPositionFor(e.SelectableItem);
+                foreach (var position in positions)
                 {
                     position.Activated();
-                    Debug.Log($"Piece {e.SelectableItem} on tile ${position.gameObject.name}");
+                    Debug.Log(position);
                 }
 
-               ////highlight
-               //var positions = _moveManager.ValidPositionFor(e.SelectableItem);
-               //foreach (var position in positions)
-               //{
-               //    position.Activated();
-               //}
+                //if (validPositions.Contains(position))
+                //{
+                //    _selectionManager.DeselectAll();
+                //}
             };
 
             _selectionManager.Deselected += (s, e) =>
@@ -102,6 +108,7 @@ namespace DAE.GameSystem
                     position.Deactivated();
                 }
             };
+
             //}
 
             //public void Activate()
@@ -132,20 +139,34 @@ namespace DAE.GameSystem
         private void ConnectGrid(Grid<Position> grid)
         {
             var positions = FindObjectsOfType<Position>();
-            Debug.Log(positions.Length);
+            //Debug.Log(positions.Length);
             foreach (var position in positions)
             {
                 //Debug.Log($"Value of Tile {view.name} is X: {x} and Y: {y}");
-
                 //TODO: attach model to view
-               
                 //view.Clicked += (s, e) => _gameStateMachine.CurrentState.Select(e.Position);
+
+                position.Clicked += (s, e) =>
+                {
+                    if (!_selectionManager.HasSelection)
+                        return;
+
+                    var selectedPiece = _selectionManager.SelectedItem;
+                    var validPositions = _moveManager.ValidPositionFor(_selectionManager.SelectedItem);
+                    //Debug.Log(validPositions);
+
+                    if (validPositions.Contains(position))
+                    {
+                        _selectionManager.DeselectAll();
+                        _moveManager.Move(selectedPiece, position);
+                        //_currentPlayerID = (_currentPlayerID + 1) % 2;
+                    }
+                };
 
                 var (x, y) = _positionHelper.ToGridPosition(grid, _boardParent, position.transform.position);
 
                 grid.Register((int)x, (int)y, position);
                 //Debug.Log($"{view} + {x} +  ,  + {y}");
-
                 //view.gameObject.name = $"Tile ({x}, {y})";
             }
         }
@@ -163,11 +184,11 @@ namespace DAE.GameSystem
                     piece.Clicked += (s, e) => /*_gameStateMachine.CurrentState.*//*Select(e.Piece);*/
                     {
                         selectionManager.DeselectAll();
-                        selectionManager.Toggle(s as Piece);
+                        selectionManager.Toggle(/*s as Piece*/e.Piece);
                     };
 
                     //callback makes sure that if we click (action), something else will react
-                    piece.Clicked += (s, e) => Debug.Log($"Piece clicked{e.Piece}");
+                    piece.Clicked += (s, e) => /*Debug.Log($"Piece clicked{e.Piece}");*/
 
                     board.Place(piece, position);
                 }
