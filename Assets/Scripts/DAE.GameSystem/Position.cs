@@ -17,7 +17,7 @@ public class PositionEventArgs: EventArgs
     }
 }
 
-public class Position : MonoBehaviour, IPointerClickHandler
+public class Position : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPointerExitHandler
 {
     [SerializeField]
     private UnityEvent OnActivate;
@@ -25,7 +25,9 @@ public class Position : MonoBehaviour, IPointerClickHandler
     [SerializeField]
     private UnityEvent OnDeactivate;
 
-    public event EventHandler<PositionEventArgs> Clicked;
+    public event EventHandler<PositionEventArgs> Dropped;
+    public event EventHandler<PositionEventArgs> Entered;
+    public event EventHandler<PositionEventArgs> Exited;
 
     //[SerializeField]
     //private GameLoop<Piece> _loop;
@@ -37,16 +39,41 @@ public class Position : MonoBehaviour, IPointerClickHandler
     public void Activated()
         => OnActivate.Invoke();
 
-    public void OnPointerClick(PointerEventData eventData)
+    #region Event Interface Impl
+    public void OnPointerEnter(PointerEventData eventData)
     {
-        Debug.Log($"Clicked { gameObject.name}");
-        //Activated();
-        OnClicked(new PositionEventArgs(this));
+        OnEntered(new PositionEventArgs(this));
     }
 
-    public virtual void OnClicked(PositionEventArgs eventArgs)
+    public void OnPointerExit(PointerEventData eventData)
     {
-        var handler = Clicked;
+        OnExited(new PositionEventArgs(this));
+    }
+
+    public void OnDrop(PointerEventData eventData)
+    {
+        OnDropped(new PositionEventArgs(this));
+    }
+    #endregion
+
+    #region Event Trigger Methods
+
+    public virtual void OnEntered(PositionEventArgs eventArgs)
+    {
+        var handler = Entered;
         handler?.Invoke(this, eventArgs);
     }
+
+    public virtual void OnExited(PositionEventArgs eventArgs)
+    {
+        var handler = Exited;
+        handler?.Invoke(this, eventArgs);
+    }
+
+    public void OnDropped(PositionEventArgs eventData)
+    {
+        var handler = Dropped;
+        handler?.Invoke(this, eventData);
+    } 
+    #endregion
 }

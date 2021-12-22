@@ -10,7 +10,7 @@ namespace DAE.GameSystem
         [SerializeField]
         private float _tileDimension;
 
-        public (int x, int y) ToGridPosition(Grid<Position> grid, Transform parent, Vector3 worldPosition)
+        public (int x, int y) ToGridPosition(Grid<Position> grid, Vector3 worldPosition)
         {
             float hexRadius = /*0.5f*/2f;
 
@@ -20,7 +20,7 @@ namespace DAE.GameSystem
             return ((int) q, (int) r);
         }
 
-        public Vector3 ToWorldPosition(Grid<Position> grid, Transform parent, int q, int r)
+        public Vector3 ToWorldPosition(Grid<Position> grid, int q, int r)
         {
             float hexRadius = /*0.5f*/2f;
 

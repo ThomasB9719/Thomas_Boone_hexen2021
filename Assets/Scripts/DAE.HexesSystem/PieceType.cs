@@ -8,6 +8,6 @@ namespace DAE.HexesSystem
 {
     public enum PieceType
     {
-        Pawn, King, Queen, Knight, Rook, Bishop
+        Player, Enemy
     }
 }

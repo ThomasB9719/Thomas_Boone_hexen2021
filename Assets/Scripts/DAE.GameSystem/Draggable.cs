@@ -7,25 +7,14 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using DAE.HexesSystem;
+using DAE.GameSystem.Cards;
 
 namespace DAE.GameSystem
 {
-    class CardEventArgs: EventArgs
-    {
-        public Card Card { get; }
-        public CardEventArgs(Card card)
-            => Card = card;
-    }
-    
-    class Card: MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHandler, ICard
-    {
-        //public void OnPointerDown(PointerEventData eventData)
-        //{
-        //    Debug.Log("OnPointerDown");
-        //}
 
-        [SerializeField]
-        private CardType _cardType;
+    
+    class Draggable: MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHandler
+    {
 
         public bool dragOnSurfaces = true;
 
@@ -36,19 +25,15 @@ namespace DAE.GameSystem
         [SerializeField]
         private HorizontalLayoutGroup _layOutGroup;
 
-        public CardType CardType => _cardType;
-
-        public event EventHandler<CardEventArgs> Clicked;
 
         private void Awake()
         {
             m_canvasGroup = GetComponent<CanvasGroup>();
+            _layOutGroup = FindInParents<HorizontalLayoutGroup>(this.gameObject);
         }
 
         public void OnBeginDrag(PointerEventData eventData)
         {
-            OnClicked(this, new CardEventArgs(this));
-
             var canvas = FindInParents<Canvas>(gameObject);
             if (canvas == null)
                 return;
@@ -57,6 +42,8 @@ namespace DAE.GameSystem
             // What we want to do is create an icon for this.
             //m_DraggingIcon = new GameObject("icon");
             m_DraggingIcon = gameObject;
+            
+            m_DraggingIcon.GetComponent<Image>().raycastTarget = false;
 
             m_DraggingIcon.transform.SetParent(canvas.transform, false);
             //m_DraggingIcon.transform.SetParent(this.transform, true);
@@ -75,18 +62,9 @@ namespace DAE.GameSystem
             else
                 m_DraggingPlane = canvas.transform as RectTransform;
 
+            
 
             SetDraggedPosition(eventData);
-        }
-
-        protected virtual void OnClicked(object source, CardEventArgs e)
-        {
-            var handle = Clicked;
-            handle?.Invoke(this, e);
-
-            //doing the same, but in another way
-            //if (handle != null)
-            //    handle.Invoke(this, e);
         }
 
         public void OnDrag(PointerEventData data)
@@ -113,9 +91,12 @@ namespace DAE.GameSystem
         {
             if (m_DraggingIcon != null)
             {
+                m_DraggingIcon.GetComponent<Image>().raycastTarget = true;
                 m_DraggingIcon.transform.SetParent(_layOutGroup.transform, true);
                 m_canvasGroup.alpha = 1f;
             }
+
+            
         }
 
         static public T FindInParents<T>(GameObject go) where T : Component

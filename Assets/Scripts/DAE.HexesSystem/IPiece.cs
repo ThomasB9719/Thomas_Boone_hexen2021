@@ -8,12 +8,6 @@ namespace DAE.HexesSystem
 {
     public interface IPiece
     {
-        //int PlayerID { get;}
-
-        //string Name { get; }
-
-        bool Moved { get; set; }
-
         PieceType PieceType { get; }
     }
 }
