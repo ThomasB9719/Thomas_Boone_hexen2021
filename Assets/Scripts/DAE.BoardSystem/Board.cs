@@ -96,9 +96,9 @@ namespace DAE.BoardSystem {
             //return true
             //else return false
 
-            if (TryGetPositionOf(piece, out var fromPosition))
+            if (!TryGetPositionOf(piece, out var fromPosition))
                 return false;
-            if (_positionPiece.Remove(piece))
+            if (!_positionPiece.Remove(piece))
                 return false;
             
             OnTaken(new TakenEventArgs<TPosition, TPiece>(fromPosition, piece));

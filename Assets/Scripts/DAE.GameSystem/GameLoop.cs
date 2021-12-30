@@ -26,6 +26,8 @@ namespace DAE.GameSystem
 
 
         private CardBase _selectedCard;
+
+        [SerializeField]
         private Piece _playerPiece;
 
         public void Start()
@@ -88,15 +90,14 @@ namespace DAE.GameSystem
             var pieces = FindObjectsOfType<Piece>();
             foreach (var piece in pieces)
             {
-                if (piece.PieceType == PieceType.Player)
-                    _playerPiece = piece;
+                //if (piece.PieceType == PieceType.Player)
+                //    _playerPiece = piece;
 
                 var (x, y) = _positionHelper.ToGridPosition(grid, piece.transform.position);
                 if (grid.TryGetPositionAt(x, y, out var position))
                 {
                     board.Place(piece, position);
                 }
-
             }
         }
 
@@ -104,7 +105,7 @@ namespace DAE.GameSystem
         {
             for(int i = 0; i < 20; i++)
             {
-                var cardType = UnityEngine.Random.Range(0, _cardTypes.Count - 1);
+                var cardType = UnityEngine.Random.Range(0, _cardTypes.Count /*- 1*/);
                 var card = Instantiate<CardBase>(_cardTypes[cardType], _cardContainer);
 
                 card.Dragged += (s, e) => Dragged(e.Card);

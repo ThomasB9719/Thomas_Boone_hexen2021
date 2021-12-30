@@ -19,19 +19,62 @@ namespace DAE.GameSystem.Cards
     {
         public event EventHandler<DragEventArgs> Dragged;
 
+        //
+        private Board<Position, Piece> _board;
+        private Grid<Position> _grid;
+        private Piece _piece;
+
+        private Position _position;
+
+        private List<Position> _validPositions = new List<Position>();
+
+        public List<Vector2> GiveDirectionNorthEast(int radius)
+        {
+            List<Vector2> northEastDirections = new List<Vector2>();
+
+            for (int i = 1; i < radius + 1; i++)
+            {
+                northEastDirections.Add(new Vector2(0, i));
+            }
+
+            return northEastDirections;
+        }
+
+        public List<Vector2> GiveDirectionNorthWest(int radius)
+        {
+            List<Vector2> northWestDirections = new List<Vector2>();
+
+            for (int i = 1; i < radius + 1; i++)
+            {
+                northWestDirections.Add(new Vector2(-i, i));
+                Debug.Log(i);
+            }
+
+            //northWestDirections.Add(new Vector2(-2, 2));
+            //northWestDirections.Add(new Vector2(-3, 3));
+            return northWestDirections;
+        }
+
+        public List<Position> Collect()
+        {
+            return _validPositions;
+        }
+        //
+
         public void OnBeginDrag(PointerEventData eventData)
         {
             OnDragCard(this, new DragEventArgs(GetComponent<CardBase>()));
         }
 
-        public bool InHand { 
-            get { return gameObject.activeSelf;  }
-            set { gameObject.SetActive(value);  }
+        public bool InHand
+        {
+            get { return gameObject.activeSelf; }
+            set { gameObject.SetActive(value); }
         }
 
         public void Remove()
         {
-            Destroy(gameObject);    
+            Destroy(gameObject);
         }
 
         public virtual void Execute(Board<Position, Piece> board, Grid<Position> grid, Piece piece, Position position)

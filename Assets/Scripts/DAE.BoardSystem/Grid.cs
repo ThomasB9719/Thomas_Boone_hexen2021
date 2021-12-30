@@ -26,11 +26,11 @@ namespace DAE.BoardSystem
 
         public void Register(int x, int y, TPosition position)
         {
-            if (x < -MapRadius || x > MapRadius)
-                throw new ArgumentException(nameof(x));
+            //if (x < -MapRadius || x > MapRadius)
+            //    throw new ArgumentException(nameof(x));
 
-            if (y < -MapRadius || y > MapRadius)
-                    throw new ArgumentException(nameof(y));
+            //if (y < -MapRadius || y > MapRadius)
+            //        throw new ArgumentException(nameof(y));
 
             //Debug.Log($"{x} , {y}");
             _positions.Add((x, y), position);

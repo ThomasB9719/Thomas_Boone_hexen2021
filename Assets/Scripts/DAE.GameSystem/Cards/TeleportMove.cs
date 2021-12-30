@@ -1,23 +1,31 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using DAE.BoardSystem;
+using DAE.HexesSystem.Moves;
 
 namespace DAE.GameSystem.Cards
 {
     class TeleportMove : CardBase
     {
-        
         public override List<Position> Positions(Board<Position, Piece> board, Grid<Position> grid, Piece piece, Position positionBoard)
         {
-            if (!board.TryGetPositionOf(piece, out var position))
-                return new List<Position>(0);
+            List<Position> allPositions = new List<Position>();
+            allPositions.Add(positionBoard);
 
-            if (!grid.TryGetCoordinateOf(position, out var coordinate))
-                return new List<Position>(0);
+            return allPositions;
+        }
 
-            if (grid.TryGetPositionAt(coordinate.x, coordinate.y, out var newPosition))
-                return new List<Position>() { newPosition };
-            else
-                return new List<Position>(0);
+        public override void Execute(Board<Position, Piece> board, Grid<Position> grid, Piece piece, Position position)
+        {
+            List<Position> positions = Positions(board, grid, piece, position);
+
+            foreach (Position availablePosition in positions)
+            {
+                if (board.TryGetPieceAt(availablePosition, out var toPiece))
+                    board.Take(toPiece);
+            }
+
+            board.Move(piece, position);
         }
     }
 }

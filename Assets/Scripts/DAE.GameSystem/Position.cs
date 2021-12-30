@@ -32,7 +32,6 @@ public class Position : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPoin
     //[SerializeField]
     //private GameLoop<Piece> _loop;
 
-
     public void Deactivated()
         => OnDeactivate.Invoke();
 
