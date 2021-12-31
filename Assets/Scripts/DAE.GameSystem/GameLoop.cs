@@ -97,6 +97,7 @@ namespace DAE.GameSystem
                 if (grid.TryGetPositionAt(x, y, out var position))
                 {
                     board.Place(piece, position);
+                    //Debug.Log($"{ piece} + {position}");
                 }
             }
         }
