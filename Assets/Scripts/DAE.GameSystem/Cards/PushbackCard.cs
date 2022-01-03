@@ -37,16 +37,46 @@ namespace DAE.GameSystem.Cards
             //}
             //return allPositions;
 
+
+
+            //var allPositions = new List<Position>();
+
+            ////foreach (var direction in MovementHelper<Position, Piece>.Directions)
+            ////{
+            //var list = new MovementHelper<Position, Piece>(board, grid, piece, positionBoard).NorthEast(1)
+            //    .NorthWest(1)
+            //    .West(1)
+            //    .East(1)
+            //    .SouthEast(1)
+            //    .SouthWest(1)
+            //    .Collect();
+            //if (list.Contains(positionBoard))
+            //{
+            //    //if (board.TryGetPieceAt(positionBoard, out var toPiece))
+            //    //    board.Take(toPiece);
+            //    return list;
+            //}
+            //allPositions.AddRange(list);
+            ////}
+            //return allPositions;
+
+
+
             var allPositions = new List<Position>();
 
             //foreach (var direction in MovementHelper<Position, Piece>.Directions)
             //{
-            var list = new MovementHelper<Position, Piece>(board, grid, piece, positionBoard).NorthEast(1)
-                .NorthWest(1)
-                .West(1)
-                .East(1)
-                .SouthEast(1)
-                .SouthWest(1)
+            var list = new MovementHelper<Position, Piece>(board, grid, piece, positionBoard).NorthEastSpecific(1)
+                .EastSpecific(1)
+                .SouthEastSpecific(1)
+                .SouthWestSpecific(1)
+                .WestSpecific(1)
+                .NorthWestSpecific(1)
+                //.NorthWest(1)
+                //.West(1)
+                //.East(1)
+                //.SouthEast(1)
+                //.SouthWest(1)
                 .Collect();
             if (list.Contains(positionBoard))
             {
