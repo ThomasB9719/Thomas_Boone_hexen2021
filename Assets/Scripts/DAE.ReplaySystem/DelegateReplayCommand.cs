@@ -18,11 +18,9 @@ namespace DAE.ReplaySystem
         }
 
         public void Forward()
-                => _forward();
+            => _forward();
 
         public void Backward()
-        => _backward();
-
-
+            => _backward();
     }
 }

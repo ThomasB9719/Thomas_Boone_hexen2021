@@ -3,10 +3,12 @@ using UnityEngine;
 using DAE.BoardSystem;
 using DAE.HexesSystem;
 using DAE.GameSystem.Cards;
+using DAE.GameSystem.GameStates;
+using DAE.StateSystem;
+using DAE.ReplaySystem;
 
 namespace DAE.GameSystem
 {
-
     class GameLoop : MonoBehaviour
     {
         //public delegate void PieceAction(Piece piece);
@@ -18,23 +20,34 @@ namespace DAE.GameSystem
 
         [SerializeField]
         private List<CardBase> _cardTypes;
+        
+        [SerializeField]
+        private Piece _playerPiece;
 
-
+        private int _maxNumberOfCards = 20;
         private Grid<Position> _grid;
         private Board<Position, Piece> _board;
         private Deck<Position,Piece, CardBase> _deck;
-
-
         private CardBase _selectedCard;
-
-        [SerializeField]
-        private Piece _playerPiece;
+        private StateMachine<GameStateBase> _gameStateMachine;
 
         public void Start()
         {
             _grid = new Grid<Position>(3);
             _board = new Board<Position, Piece>();
             _deck = new Deck<Position, Piece, CardBase>(_board, _grid);
+
+            _gameStateMachine = new StateMachine<GameStateBase>();
+
+            var replayManager = new ReplayManager();
+
+            var gameplayState = new GamePlayState(_gameStateMachine, _board);
+            _gameStateMachine.Register(GameState.GamePlayState, gameplayState);
+
+            var replayState = new ReplayState(_gameStateMachine, replayManager);
+            _gameStateMachine.Register(GameState.ReplayState, replayState);
+
+            _gameStateMachine.InitialState = GameState.GamePlayState;
 
             ConnectGrid(_grid);
             ConnectPiece(_grid, _board);
@@ -71,6 +84,16 @@ namespace DAE.GameSystem
             };
         }
 
+        public void Forward()
+        {
+            _gameStateMachine.CurrentState.Forward();
+        }
+
+        public void Backward()
+        {
+            _gameStateMachine.CurrentState.Backward();
+        }
+
         private void ConnectGrid(Grid<Position> grid)
         {
             var positions = FindObjectsOfType<Position>();
@@ -104,7 +127,7 @@ namespace DAE.GameSystem
 
         private void GenerateCards()
         {
-            for(int i = 0; i < 20; i++)
+            for(int i = 0; i < _maxNumberOfCards; i++)
             {
                 var cardType = UnityEngine.Random.Range(0, _cardTypes.Count /*- 1*/);
                 var card = Instantiate<CardBase>(_cardTypes[cardType], _cardContainer);

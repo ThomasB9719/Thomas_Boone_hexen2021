@@ -4,11 +4,17 @@ using DAE.HexesSystem.Moves;
 using UnityEngine;
 using System.Linq;
 using System;
+using DAE.ReplaySystem;
 
 namespace DAE.GameSystem.Cards
 {
     class PushbackCard : CardBase
     {
+        public PushbackCard(ReplayManager replayManager) : base(replayManager)
+        {
+
+        }
+
         public override List<Position> Positions(Board<Position, Piece> board, Grid<Position> grid, Piece piece, Position positionBoard)
         {
             //if (!board.TryGetPositionOf(piece, out var position))
@@ -37,114 +43,110 @@ namespace DAE.GameSystem.Cards
             //}
             //return allPositions;
 
-
-
-            //var allPositions = new List<Position>();
-
-            ////foreach (var direction in MovementHelper<Position, Piece>.Directions)
-            ////{
-            //var list = new MovementHelper<Position, Piece>(board, grid, piece, positionBoard).NorthEast(1)
-            //    .NorthWest(1)
-            //    .West(1)
-            //    .East(1)
-            //    .SouthEast(1)
-            //    .SouthWest(1)
-            //    .Collect();
-            //if (list.Contains(positionBoard))
-            //{
-            //    //if (board.TryGetPieceAt(positionBoard, out var toPiece))
-            //    //    board.Take(toPiece);
-            //    return list;
-            //}
-            //allPositions.AddRange(list);
-            ////}
-            //return allPositions;
-
-
-
             var allPositions = new List<Position>();
-
-            //foreach (var direction in MovementHelper<Position, Piece>.Directions)
-            //{
-            var list = new MovementHelper<Position, Piece>(board, grid, piece, positionBoard).NorthEastSpecific(1)
-                .EastSpecific(1)
-                .SouthEastSpecific(1)
-                .SouthWestSpecific(1)
-                .WestSpecific(1)
-                .NorthWestSpecific(1)
-                //.NorthWest(1)
-                //.West(1)
-                //.East(1)
-                //.SouthEast(1)
-                //.SouthWest(1)
+            var list = new MovementHelper<Position, Piece>(board, grid, piece, positionBoard).NorthEast(1)
+                .NorthWest(1)
+                .West(1)
+                .East(1)
+                .SouthEast(1)
+                .SouthWest(1)
                 .Collect();
             if (list.Contains(positionBoard))
             {
-                //if (board.TryGetPieceAt(positionBoard, out var toPiece))
-                //    board.Take(toPiece);
                 return list;
             }
             allPositions.AddRange(list);
-            //}
             return allPositions;
+
+            //var allPositionsSpecific = new List<Position>();
+            //var listSpecific = new MovementHelper<Position, Piece>(board, grid, piece, positionBoard).NorthEastSpecific(1)
+            //    .EastSpecific(1)
+            //    .SouthEastSpecific(1)
+            //    .SouthWestSpecific(1)
+            //    .WestSpecific(1)
+            //    .NorthWestSpecific(1)
+            //    .Collect();
+
+            //if (listSpecific.Contains(positionBoard))
+            //{
+            //    return listSpecific;
+            //}
+
+            //allPositionsSpecific.AddRange(listSpecific);
+            //return allPositionsSpecific;
         }
 
         //public List<Position> SelectedPositions(Board<Position, Piece> board, Grid<Position> grid, Piece piece, Position positionBoard)
         //{
-        //    //var selectedPositions = new List<Position>();
+        //    //    //var selectedPositions = new List<Position>();
 
-        //    ////foreach (var direction in MovementHelper<Position, Piece>.Directions)
-        //    ////{
-        //    //var list = new MovementHelper<Position, Piece>(board, grid, piece, positionBoard).NorthEast(1)
-        //    //    .NorthWest(1)
-        //    //    .West(1)
-        //    //    .East(1)
-        //    //    .SouthEast(1)
-        //    //    .SouthWest(1)
+        //    //    ////foreach (var direction in MovementHelper<Position, Piece>.Directions)
+        //    //    ////{
+        //    //    //var list = new MovementHelper<Position, Piece>(board, grid, piece, positionBoard).NorthEast(1)
+        //    //    //    .NorthWest(1)
+        //    //    //    .West(1)
+        //    //    //    .East(1)
+        //    //    //    .SouthEast(1)
+        //    //    //    .SouthWest(1)
+        //    //    //    .Collect();
+        //    //    //if (list.Contains(positionBoard))
+        //    //    //{
+        //    //    //    int positionList = list.IndexOf(positionBoard);
+        //    //    //    int positionListNext = positionList + 1;
+        //    //    //    int positionListPrevious = positionList - 1;
+
+        //    //    //    Position previousPosition = list.ElementAt(positionListPrevious);
+        //    //    //    Position nextPosition = list.ElementAt(positionListNext);
+        //    //    //    list.Add(previousPosition);
+        //    //    //    list.Add(nextPosition);
+        //    //    //    return list;
+        //    //    //}
+        //    //    ////selectedPositions.AddRange(list);
+        //    //    ////selectedPositions.Add(positionBoard);
+        //    //    //selectedPositions.AddRange(list);
+
+        //    //    //return selectedPositions;
+
+        //    //    //var allPositions = new List<Position>();
+        //    //    //Vector2Int[] directions = MovementHelper<Position, Piece>.Directions;
+        //    //    //foreach (var direction in /*MovementHelper<Position, Piece>.Directions*/ directions)
+        //    //    //{
+        //    //    //    int positionArray = Array.IndexOf(directions, direction);
+        //    //    //    int positionArrayNext = positionArray + 1;
+        //    //    //    int positionArrayPrevious = positionArray - 1;
+
+        //    //    //    Vector2Int nextDirection = directions.ElementAt(positionArrayNext);
+        //    //    //    Vector2Int previousDirection = directions.ElementAt(positionArrayPrevious);
+
+        //    //    //    var listPrevious = new MovementHelper<Position, Piece>(board, grid, piece, positionBoard).Move(previousDirection.x, previousDirection.y).Collect();
+        //    //    //    var listNext = new MovementHelper<Position, Piece>(board, grid, piece, positionBoard).Move(nextDirection.x, nextDirection.y).Collect();               
+
+        //    //    //    var list = new MovementHelper<Position, Piece>(board, grid, piece, positionBoard).Move(direction.x, direction.y).Collect();
+        //    //    //    if (list.Contains(positionBoard))
+        //    //    //    {
+
+        //    //    //        return list;
+        //    //    //    }
+
+        //    //    //    allPositions.AddRange(list);
+        //    //    //    allPositions.AddRange(listNext);
+        //    //    //    allPositions.AddRange(listPrevious);
+        //    //    //}
+        //    //    //return allPositions;
+
+        //    //var allPositions = new List<Position>();
+        //    //var list = new MovementHelper<Position, Piece>(board, grid, piece, positionBoard).NorthEastSpecific(1)
+        //    //    .EastSpecific(1)
+        //    //    .SouthEastSpecific(1)
+        //    //    .SouthWestSpecific(1)
+        //    //    .WestSpecific(1)
+        //    //    .NorthWestSpecific(1)
         //    //    .Collect();
         //    //if (list.Contains(positionBoard))
         //    //{
-        //    //    int positionList = list.IndexOf(positionBoard);
-        //    //    int positionListNext = positionList + 1;
-        //    //    int positionListPrevious = positionList - 1;
-
-        //    //    Position previousPosition = list.ElementAt(positionListPrevious);
-        //    //    Position nextPosition = list.ElementAt(positionListNext);
-        //    //    list.Add(previousPosition);
-        //    //    list.Add(nextPosition);
         //    //    return list;
         //    //}
-        //    ////selectedPositions.AddRange(list);
-        //    ////selectedPositions.Add(positionBoard);
-        //    //selectedPositions.AddRange(list);
-
-        //    //return selectedPositions;
-
-        //    //var allPositions = new List<Position>();
-        //    //Vector2Int[] directions = MovementHelper<Position, Piece>.Directions;
-        //    //foreach (var direction in /*MovementHelper<Position, Piece>.Directions*/ directions)
-        //    //{
-        //    //    int positionArray = Array.IndexOf(directions, direction);
-        //    //    int positionArrayNext = positionArray + 1;
-        //    //    int positionArrayPrevious = positionArray - 1;
-
-        //    //    Vector2Int nextDirection = directions.ElementAt(positionArrayNext);
-        //    //    Vector2Int previousDirection = directions.ElementAt(positionArrayPrevious);
-
-        //    //    var listPrevious = new MovementHelper<Position, Piece>(board, grid, piece, positionBoard).Move(previousDirection.x, previousDirection.y).Collect();
-        //    //    var listNext = new MovementHelper<Position, Piece>(board, grid, piece, positionBoard).Move(nextDirection.x, nextDirection.y).Collect();               
-
-        //    //    var list = new MovementHelper<Position, Piece>(board, grid, piece, positionBoard).Move(direction.x, direction.y).Collect();
-        //    //    if (list.Contains(positionBoard))
-        //    //    {
-
-        //    //        return list;
-        //    //    }
-
-        //    //    allPositions.AddRange(list);
-        //    //    allPositions.AddRange(listNext);
-        //    //    allPositions.AddRange(listPrevious);
-        //    //}
+        //    //allPositions.AddRange(list);
         //    //return allPositions;
         //}
 
@@ -214,6 +216,7 @@ namespace DAE.GameSystem.Cards
 
                     board.Move(toPiece, newPosition);
                 }
+
             }
         }
     }

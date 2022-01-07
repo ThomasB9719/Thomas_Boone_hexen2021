@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using DAE.BoardSystem;
 using DAE.HexesSystem;
+using DAE.ReplaySystem;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -19,47 +20,12 @@ namespace DAE.GameSystem.Cards
     {
         public event EventHandler<DragEventArgs> Dragged;
 
-        //
-        private Board<Position, Piece> _board;
-        private Grid<Position> _grid;
-        private Piece _piece;
+        public ReplayManager ReplayManager;
 
-        private Position _position;
-
-        private List<Position> _validPositions = new List<Position>();
-
-        public List<Vector2> GiveDirectionNorthEast(int radius)
+        public CardBase(ReplayManager replayManager)
         {
-            List<Vector2> northEastDirections = new List<Vector2>();
-
-            for (int i = 1; i < radius + 1; i++)
-            {
-                northEastDirections.Add(new Vector2(0, i));
-            }
-
-            return northEastDirections;
+            ReplayManager = replayManager;
         }
-
-        public List<Vector2> GiveDirectionNorthWest(int radius)
-        {
-            List<Vector2> northWestDirections = new List<Vector2>();
-
-            for (int i = 1; i < radius + 1; i++)
-            {
-                northWestDirections.Add(new Vector2(-i, i));
-                Debug.Log(i);
-            }
-
-            //northWestDirections.Add(new Vector2(-2, 2));
-            //northWestDirections.Add(new Vector2(-3, 3));
-            return northWestDirections;
-        }
-
-        public List<Position> Collect()
-        {
-            return _validPositions;
-        }
-        //
 
         public void OnBeginDrag(PointerEventData eventData)
         {
@@ -83,6 +49,18 @@ namespace DAE.GameSystem.Cards
                 board.Take(toPiece);
 
             board.Move(piece, position);
+
+            Action forward = () =>
+            {
+
+            };
+
+            Action backward = () =>
+            {
+
+            };
+
+            ReplayManager.Execute(new DelegateReplayCommand(forward, backward));
         }
 
         public abstract List<Position> Positions(Board<Position, Piece> board, Grid<Position> grid, Piece piece, Position position);

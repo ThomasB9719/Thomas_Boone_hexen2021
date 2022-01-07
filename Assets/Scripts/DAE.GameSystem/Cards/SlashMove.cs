@@ -1,11 +1,16 @@
 ﻿using System.Collections.Generic;
 using DAE.BoardSystem;
 using DAE.HexesSystem.Moves;
+using DAE.ReplaySystem;
 
 namespace DAE.GameSystem.Cards
 {
     class SlashMove : CardBase
     {
+        public SlashMove(ReplayManager replayManager) : base(replayManager)
+        {
+
+        }
 
         public override List<Position> Positions(Board<Position, Piece> board, Grid<Position> grid, Piece piece, Position positionBoard)
         {
@@ -21,9 +26,6 @@ namespace DAE.GameSystem.Cards
             //    return new List<Position>(0);
 
             var allPositions = new List<Position>();
-
-            //foreach (var direction in MovementHelper<Position, Piece>.Directions)
-            //{
             var list = new MovementHelper<Position, Piece>(board, grid, piece, positionBoard).NorthEast(1)
                 .NorthWest(1)
                 .West(1)
@@ -33,13 +35,27 @@ namespace DAE.GameSystem.Cards
                 .Collect();
             if (list.Contains(positionBoard))
             {
-                //if (board.TryGetPieceAt(positionBoard, out var toPiece))
-                //    board.Take(toPiece);
                 return list;
             }
             allPositions.AddRange(list);
-            //}
             return allPositions;
+
+            //var allPositionsSpecific = new List<Position>();
+            //var listSpecific = new MovementHelper<Position, Piece>(board, grid, piece, positionBoard).NorthEastSpecific(1)
+            //    .EastSpecific(1)
+            //    .SouthEastSpecific(1)
+            //    .SouthWestSpecific(1)
+            //    .WestSpecific(1)
+            //    .NorthWestSpecific(1)
+            //    .Collect();
+
+            //if (listSpecific.Contains(positionBoard))
+            //{
+            //    return listSpecific;
+            //}
+
+            //allPositionsSpecific.AddRange(listSpecific);
+            //return allPositionsSpecific;
         }
 
         public override void Execute(Board<Position, Piece> board, Grid<Position> grid, Piece piece, Position position)
@@ -51,8 +67,6 @@ namespace DAE.GameSystem.Cards
                 if (board.TryGetPieceAt(availablePosition, out var toPiece))
                     board.Take(toPiece);
             }
-
-            //board.Move(piece, position);
         }
     }
 }

@@ -2,12 +2,18 @@
 using DAE.BoardSystem;
 using DAE.GameSystem;
 using DAE.HexesSystem.Moves;
+using DAE.ReplaySystem;
 using UnityEngine;
 
 namespace DAE.GameSystem.Cards
 {
     class StrikeMove : CardBase
     {
+        public StrikeMove(ReplayManager replayManager) : base(replayManager)
+        {
+
+        }
+
         public override List<Position> Positions(Board<Position, Piece> board, Grid<Position> grid, Piece piece, Position positionBoard)
         {
             var allPositions = new List<Position>();
@@ -16,8 +22,6 @@ namespace DAE.GameSystem.Cards
                 var list = new MovementHelper<Position, Piece>(board, grid, piece, positionBoard).Move(direction.x, direction.y).Collect();
                 if (list.Contains(positionBoard))
                 {
-                    //if (board.TryGetPieceAt(positionBoard, out var toPiece))
-                    //    board.Take(toPiece);
                     return list;
                 }
 
@@ -33,10 +37,16 @@ namespace DAE.GameSystem.Cards
             foreach (Position availablePosition in positions)
             {
                 if (board.TryGetPieceAt(availablePosition, out var toPiece))
-                    board.Take(toPiece);
-            }
+                    if (toPiece.PieceType == HexesSystem.PieceType.Player)
+                    {
+                        return;
+                    }
+                    else
+                    {
+                        board.Take(toPiece);
+                    }
 
-            //board.Move(piece, position);
+            }
         }
     }
 }

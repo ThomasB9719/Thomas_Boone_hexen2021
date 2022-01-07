@@ -25,8 +25,11 @@ namespace DAE.HexesSystem.Moves
             //new Vector2Int(-1,1), // south west
             //new Vector2Int(0,1) //south east
 
-            new Vector2Int(1,-1), new Vector2Int(0,-1), new Vector2Int(-1,0), new Vector2Int(1,0), new Vector2Int(0,1),
-            new Vector2Int(-1,1), 
+            //new Vector2Int(1,-1), new Vector2Int(0,-1), new Vector2Int(-1,0), new Vector2Int(1,0), new Vector2Int(0,1),
+            //new Vector2Int(-1,1), 
+
+            new Vector2Int(1,-1), new Vector2Int(0,-1), new Vector2Int(-1,0), new Vector2Int(-1,1), new Vector2Int(0,1),
+            new Vector2Int(1,0),
         };
         public MovementHelper(Board<TPosition, TPiece> board, Grid<TPosition> grid, TPiece piece, TPosition position)
         {
@@ -198,10 +201,10 @@ namespace DAE.HexesSystem.Moves
             _validPositions.Add(otherPositionFirstNextPosition);
 
             var otherPositionSecond = GetNextDirectionUp(direction);
-            var otherPositionSecondXCoordinate = coordinate.x + otherPositionFirst.x;
-            var otherPositionSecondYCoordinate = coordinate.y + otherPositionFirst.y;
+            var otherPositionSecondXCoordinate = coordinate.x + otherPositionSecond.x;
+            var otherPositionSecondYCoordinate = coordinate.y + otherPositionSecond.y;
 
-            _grid.TryGetPositionAt(otherPositionFirstXCoordinate, otherPositionFirstYCoordinate, out var otherPositionSecondNextPosition);
+            _grid.TryGetPositionAt(otherPositionSecondXCoordinate, otherPositionSecondYCoordinate, out var otherPositionSecondNextPosition);
 
             var isOtherPositionOffGridToo = validators.All((v) => v(_board, _grid, _piece, otherPositionSecondNextPosition));
 
@@ -219,7 +222,7 @@ namespace DAE.HexesSystem.Moves
             {
                 return Directions[5];
             }
-            else return Directions[currentDirection /*- 1*/];
+            else return Directions[currentDirection - 1];
         }
 
         public Vector2Int GetNextDirectionUp(int currentDirection)
@@ -228,7 +231,7 @@ namespace DAE.HexesSystem.Moves
             {
                 return Directions[0];
             }
-            else return Directions[currentDirection /*+ 1*/];
+            else return Directions[currentDirection + 1];
         }
 
         public List<TPosition> Collect()
