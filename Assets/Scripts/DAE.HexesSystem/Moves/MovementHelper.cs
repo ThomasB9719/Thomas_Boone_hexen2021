@@ -18,19 +18,14 @@ namespace DAE.HexesSystem.Moves
 
         public static Vector2Int[] Directions = new Vector2Int[6]
         {
-            //new Vector2Int(1,0),//east
-            //new Vector2Int(1,-1), //north east
-            //new Vector2Int(0,-1), //north west
-            //new Vector2Int(-1,0), //west
-            //new Vector2Int(-1,1), // south west
-            //new Vector2Int(0,1) //south east
-
-            //new Vector2Int(1,-1), new Vector2Int(0,-1), new Vector2Int(-1,0), new Vector2Int(1,0), new Vector2Int(0,1),
-            //new Vector2Int(-1,1), 
-
-            new Vector2Int(1,-1), new Vector2Int(0,-1), new Vector2Int(-1,0), new Vector2Int(-1,1), new Vector2Int(0,1),
-            new Vector2Int(1,0),
+            new Vector2Int(1,-1), //north east
+            new Vector2Int(1,0),//east
+            new Vector2Int(0,1), //south east
+            new Vector2Int(-1,1), // south west
+            new Vector2Int(-1,0), //west
+            new Vector2Int(0,-1), //north west
         };
+
         public MovementHelper(Board<TPosition, TPiece> board, Grid<TPosition> grid, TPiece piece, TPosition position)
         {
             _board = board;
@@ -40,19 +35,9 @@ namespace DAE.HexesSystem.Moves
             _position = position;
         }
 
-   
-        //public MovementHelper<TPosition,TPiece> North(int numTiles = int.MaxValue, params Validator[] validators)
-        //    => Move(0, 1, numTiles, validators);
-
-
         public MovementHelper<TPosition, TPiece> SouthEast(int numTiles = int.MaxValue, params Validator[] validators)
         {
             return Move(0, 1, numTiles, validators);
-        }
-
-        public MovementHelper<TPosition, TPiece> SouthEastSpecific(int numTiles = int.MaxValue, params Validator[] validators)
-        {
-            return MoveSpecific(0, 1, numTiles, validators);
         }
 
         public MovementHelper<TPosition, TPiece> East(int numTiles = int.MaxValue, params Validator[] validators)
@@ -60,34 +45,14 @@ namespace DAE.HexesSystem.Moves
             return Move(1, 0, numTiles, validators);
         }
 
-        public MovementHelper<TPosition, TPiece> EastSpecific(int numTiles = int.MaxValue, params Validator[] validators)
-        {
-            return MoveSpecific(1, 0, numTiles, validators);
-        }
-
         public MovementHelper<TPosition, TPiece> NorthEast(int numTiles = int.MaxValue, params Validator[] validators)
         {
             return Move(1, -1, numTiles, validators);
         }
 
-        public MovementHelper<TPosition, TPiece> NorthEastSpecific(int numTiles = int.MaxValue, params Validator[] validators)
-        {
-            return MoveSpecific(1, -1, numTiles, validators);
-        }
-
-        //public MovementHelper<TPosition, TPiece> South(int numTiles = int.MaxValue, params Validator[] validators)
-        //{
-        //    return Move(0, -1, numTiles, validators);
-        //}
-
         public MovementHelper<TPosition, TPiece> NorthWest(int numTiles = int.MaxValue, params Validator[] validators)
         {
             return Move(0, -1, numTiles, validators);
-        }
-
-        public MovementHelper<TPosition, TPiece> NorthWestSpecific(int numTiles = int.MaxValue, params Validator[] validators)
-        {
-            return MoveSpecific(0, -1, numTiles, validators);
         }
 
         public MovementHelper<TPosition, TPiece> West(int numTiles = int.MaxValue, params Validator[] validators)
@@ -95,29 +60,10 @@ namespace DAE.HexesSystem.Moves
             return Move(-1, 0, numTiles, validators);
         }
 
-        public MovementHelper<TPosition, TPiece> WestSpecific(int numTiles = int.MaxValue, params Validator[] validators)
-        {
-            return MoveSpecific(-1, 0, numTiles, validators);
-        }
-
         public MovementHelper<TPosition, TPiece> SouthWest(int numTiles = int.MaxValue, params Validator[] validators)
         {
             return Move(-1, 1, numTiles, validators);
         }
-
-        public MovementHelper<TPosition, TPiece> SouthWestSpecific(int numTiles = int.MaxValue, params Validator[] validators)
-        {
-            return MoveSpecific(-1, 1, numTiles, validators);
-        }
-
-
-        //public List<Position> StrikeMoves(Board<Position, Piece> board, Grid<Position> grid, Piece piece, Position positionBoard)
-        //{
-        //    MovementHelper<Position, Piece> strikeMovementHelper = new MovementHelper<Position, Piece>(board, grid, piece);
-        //    strikeMovementHelper.GiveDirectionNorthEast(2);
-
-        //    return strikeMovementHelper.Collect();
-        //}
 
         public delegate bool Validator(Board<TPosition, TPiece> board, Grid<TPosition> grid, TPiece piece, TPosition position);
 
@@ -144,8 +90,8 @@ namespace DAE.HexesSystem.Moves
 
                 _validPositions.Add(nextPosition);
 
-                nextXCoordinate += coordinate.x + xOffset;
-                nextYCoordinate += coordinate.y + yOffset;
+                nextXCoordinate += /*coordinate.x +*/ xOffset;
+                nextYCoordinate += /*coordinate.y +*/ yOffset;
 
                 hasNextPosition = _grid.TryGetPositionAt(nextXCoordinate, nextYCoordinate, out nextPosition);
 
@@ -154,96 +100,15 @@ namespace DAE.HexesSystem.Moves
             return this;
         }
 
-        public MovementHelper<TPosition, TPiece> MoveSpecific(int xOffset, int yOffset, int direction, params Validator[] validators)
-        {
-            List<TPosition> tempValidPositions = new List<TPosition>();
-
-            if (!_board.TryGetPositionOf(_piece, out var position))
-                return this;
-
-            if (!_grid.TryGetCoordinateOf(position, out var coordinate))
-                return this;
-
-            var nextXCoordinate = coordinate.x + xOffset;
-            var nextYCoordinate = coordinate.y + yOffset;
-
-            var hasNextPosition = _grid.TryGetPositionAt(nextXCoordinate, nextYCoordinate, out var nextPosition);
-
-            var isOk = validators.All((v) => v(_board, _grid, _piece, nextPosition));
-            if (!isOk)
-                return this;
-
-            tempValidPositions.Add(nextPosition);
-
-            if (tempValidPositions.Contains(_position))
-            {
-                foreach(var tempPosition in tempValidPositions)
-                {
-                    _validPositions.Add(tempPosition);
-                }
-            }
-            else
-            {
-                return this;
-            }
-
-            var otherPositionFirst = GetNextDirectionDown(direction);
-            var otherPositionFirstXCoordinate = coordinate.x + otherPositionFirst.x;
-            var otherPositionFirstYCoordinate = coordinate.y + otherPositionFirst.y;
-
-            _grid.TryGetPositionAt(otherPositionFirstXCoordinate, otherPositionFirstYCoordinate, out var otherPositionFirstNextPosition);
-
-            var isOtherPositionOffGrid = validators.All((v) => v(_board, _grid, _piece, otherPositionFirstNextPosition));
-
-            if (!isOtherPositionOffGrid)
-                return this;
-
-            _validPositions.Add(otherPositionFirstNextPosition);
-
-            var otherPositionSecond = GetNextDirectionUp(direction);
-            var otherPositionSecondXCoordinate = coordinate.x + otherPositionSecond.x;
-            var otherPositionSecondYCoordinate = coordinate.y + otherPositionSecond.y;
-
-            _grid.TryGetPositionAt(otherPositionSecondXCoordinate, otherPositionSecondYCoordinate, out var otherPositionSecondNextPosition);
-
-            var isOtherPositionOffGridToo = validators.All((v) => v(_board, _grid, _piece, otherPositionSecondNextPosition));
-
-            if (!isOtherPositionOffGridToo)
-                return this;
-
-            _validPositions.Add(otherPositionSecondNextPosition);
-
-            return this;
-        }
-
-        public Vector2Int GetNextDirectionDown(int currentDirection)
-        {
-            if (currentDirection - 1 <= -1)
-            {
-                return Directions[5];
-            }
-            else return Directions[currentDirection - 1];
-        }
-
-        public Vector2Int GetNextDirectionUp(int currentDirection)
-        {
-            if (currentDirection + 1 >= 6)
-            {
-                return Directions[0];
-            }
-            else return Directions[currentDirection + 1];
-        }
-
         public List<TPosition> Collect()
         {
             return _validPositions;
         }
 
-        public static bool IsEmptyTile(Board<TPosition, TPiece> board, Grid<TPosition> grid, TPiece piece, TPosition position)
-            => !board.TryGetPieceAt(position, out _);
+        //public static bool IsEmptyTile(Board<TPosition, TPiece> board, Grid<TPosition> grid, TPiece piece, TPosition position)
+        //    => !board.TryGetPieceAt(position, out _);
 
-        public static bool HasEnemyPiece(Board<TPosition, TPiece> board, Grid<TPosition> grid, TPiece piece, TPosition position)
-            => board.TryGetPieceAt(position, out var enemyPiece) /*&& enemyPiece.PlayerID != piece.PlayerID*/;
-
+        //public static bool HasEnemyPiece(Board<TPosition, TPiece> board, Grid<TPosition> grid, TPiece piece, TPosition position)
+        //    => board.TryGetPieceAt(position, out var enemyPiece);
     }
 }

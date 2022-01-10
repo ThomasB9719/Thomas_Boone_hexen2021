@@ -45,7 +45,6 @@ namespace DAE.GameSystem.Cards
                     {
                         board.Take(toPiece);
                     }
-
             }
         }
     }

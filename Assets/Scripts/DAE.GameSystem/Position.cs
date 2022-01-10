@@ -29,9 +29,6 @@ public class Position : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPoin
     public event EventHandler<PositionEventArgs> Entered;
     public event EventHandler<PositionEventArgs> Exited;
 
-    //[SerializeField]
-    //private GameLoop<Piece> _loop;
-
     public void Deactivated()
         => OnDeactivate.Invoke();
 

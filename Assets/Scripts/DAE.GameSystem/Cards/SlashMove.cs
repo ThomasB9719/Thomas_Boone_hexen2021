@@ -14,48 +14,26 @@ namespace DAE.GameSystem.Cards
 
         public override List<Position> Positions(Board<Position, Piece> board, Grid<Position> grid, Piece piece, Position positionBoard)
         {
-            //if (!board.TryGetPositionOf(piece, out var position))
-            //    return new List<Position>(0);
-
-            //if (!grid.TryGetCoordinateOf(position, out var coordinate))
-            //    return new List<Position>(0);
-
-            //if (grid.TryGetPositionAt(coordinate.x, coordinate.y, out var newPosition))
-            //    return new List<Position>() { newPosition };
-            //else
-            //    return new List<Position>(0);
-
-            var allPositions = new List<Position>();
-            var list = new MovementHelper<Position, Piece>(board, grid, piece, positionBoard).NorthEast(1)
-                .NorthWest(1)
-                .West(1)
+            var  allPositions = new MovementHelper<Position, Piece>(board, grid, piece, positionBoard)
+                .NorthEast(1)
                 .East(1)
                 .SouthEast(1)
                 .SouthWest(1)
+                .West(1)
+                .NorthWest(1)
                 .Collect();
-            if (list.Contains(positionBoard))
+
+            int index = allPositions.IndexOf(positionBoard);
+            if (index != -1)
             {
-                return list;
+                return new List<Position>()
+                {     
+                    allPositions[(index - 1) >= 0 ? index - 1 : allPositions.Count - 1  ],
+                    allPositions[index],
+                    allPositions[(index + 1) % allPositions.Count]
+                }; 
             }
-            allPositions.AddRange(list);
             return allPositions;
-
-            //var allPositionsSpecific = new List<Position>();
-            //var listSpecific = new MovementHelper<Position, Piece>(board, grid, piece, positionBoard).NorthEastSpecific(1)
-            //    .EastSpecific(1)
-            //    .SouthEastSpecific(1)
-            //    .SouthWestSpecific(1)
-            //    .WestSpecific(1)
-            //    .NorthWestSpecific(1)
-            //    .Collect();
-
-            //if (listSpecific.Contains(positionBoard))
-            //{
-            //    return listSpecific;
-            //}
-
-            //allPositionsSpecific.AddRange(listSpecific);
-            //return allPositionsSpecific;
         }
 
         public override void Execute(Board<Position, Piece> board, Grid<Position> grid, Piece piece, Position position)

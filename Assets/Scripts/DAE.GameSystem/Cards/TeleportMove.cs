@@ -28,17 +28,9 @@ namespace DAE.GameSystem.Cards
 
         public override void Execute(Board<Position, Piece> board, Grid<Position> grid, Piece piece, Position position)
         {
-            board.TryGetPositionOf(piece, out var fromPosition);
+            //board.TryGetPositionOf(piece, out var fromPosition);
 
-            List<Position> positions = Positions(board, grid, piece, position);
-
-            foreach (Position availablePosition in positions)
-            {
-                //if (board.TryGetPieceAt(availablePosition, out var toPiece))
-                //    board.Take(toPiece);
-
-                board.Move(piece, availablePosition);
-            }
+            board.Move(piece, position);
 
             //Action forward = () =>
             //{

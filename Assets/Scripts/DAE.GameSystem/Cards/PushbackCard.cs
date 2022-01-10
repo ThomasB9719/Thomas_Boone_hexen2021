@@ -17,138 +17,27 @@ namespace DAE.GameSystem.Cards
 
         public override List<Position> Positions(Board<Position, Piece> board, Grid<Position> grid, Piece piece, Position positionBoard)
         {
-            //if (!board.TryGetPositionOf(piece, out var position))
-            //    return new List<Position>(0);
-
-            //if (!grid.TryGetCoordinateOf(position, out var coordinate))
-            //    return new List<Position>(0);
-
-            //if (grid.TryGetPositionAt(coordinate.x, coordinate.y, out var newPosition))
-            //    return new List<Position>() { newPosition };
-            //else
-            //    return new List<Position>(0);
-
-            //var allPositions = new List<Position>();
-            //foreach (var direction in MovementHelper<Position, Piece>.Directions)
-            //{
-            //    var list = new MovementHelper<Position, Piece>(board, grid, piece, positionBoard).Move(direction.x, direction.y).Collect();
-            //    if (list.Contains(positionBoard))
-            //    {
-            //        //if (board.TryGetPieceAt(positionBoard, out var toPiece))
-            //        //    board.Take(toPiece);
-            //        return list;
-            //    }
-
-            //    allPositions.AddRange(list);
-            //}
-            //return allPositions;
-
-            var allPositions = new List<Position>();
-            var list = new MovementHelper<Position, Piece>(board, grid, piece, positionBoard).NorthEast(1)
-                .NorthWest(1)
-                .West(1)
+            var allPositions = new MovementHelper<Position, Piece>(board, grid, piece, positionBoard)
+                .NorthEast(1)
                 .East(1)
                 .SouthEast(1)
                 .SouthWest(1)
+                .West(1)
+                .NorthWest(1)
                 .Collect();
-            if (list.Contains(positionBoard))
+
+            int index = allPositions.IndexOf(positionBoard);
+            if (index != -1)
             {
-                return list;
+                return new List<Position>()
+                {
+                    allPositions[(index - 1) >= 0 ? index - 1 : allPositions.Count - 1  ],
+                    allPositions[index],
+                    allPositions[(index + 1) % allPositions.Count]
+                };
             }
-            allPositions.AddRange(list);
             return allPositions;
-
-            //var allPositionsSpecific = new List<Position>();
-            //var listSpecific = new MovementHelper<Position, Piece>(board, grid, piece, positionBoard).NorthEastSpecific(1)
-            //    .EastSpecific(1)
-            //    .SouthEastSpecific(1)
-            //    .SouthWestSpecific(1)
-            //    .WestSpecific(1)
-            //    .NorthWestSpecific(1)
-            //    .Collect();
-
-            //if (listSpecific.Contains(positionBoard))
-            //{
-            //    return listSpecific;
-            //}
-
-            //allPositionsSpecific.AddRange(listSpecific);
-            //return allPositionsSpecific;
         }
-
-        //public List<Position> SelectedPositions(Board<Position, Piece> board, Grid<Position> grid, Piece piece, Position positionBoard)
-        //{
-        //    //    //var selectedPositions = new List<Position>();
-
-        //    //    ////foreach (var direction in MovementHelper<Position, Piece>.Directions)
-        //    //    ////{
-        //    //    //var list = new MovementHelper<Position, Piece>(board, grid, piece, positionBoard).NorthEast(1)
-        //    //    //    .NorthWest(1)
-        //    //    //    .West(1)
-        //    //    //    .East(1)
-        //    //    //    .SouthEast(1)
-        //    //    //    .SouthWest(1)
-        //    //    //    .Collect();
-        //    //    //if (list.Contains(positionBoard))
-        //    //    //{
-        //    //    //    int positionList = list.IndexOf(positionBoard);
-        //    //    //    int positionListNext = positionList + 1;
-        //    //    //    int positionListPrevious = positionList - 1;
-
-        //    //    //    Position previousPosition = list.ElementAt(positionListPrevious);
-        //    //    //    Position nextPosition = list.ElementAt(positionListNext);
-        //    //    //    list.Add(previousPosition);
-        //    //    //    list.Add(nextPosition);
-        //    //    //    return list;
-        //    //    //}
-        //    //    ////selectedPositions.AddRange(list);
-        //    //    ////selectedPositions.Add(positionBoard);
-        //    //    //selectedPositions.AddRange(list);
-
-        //    //    //return selectedPositions;
-
-        //    //    //var allPositions = new List<Position>();
-        //    //    //Vector2Int[] directions = MovementHelper<Position, Piece>.Directions;
-        //    //    //foreach (var direction in /*MovementHelper<Position, Piece>.Directions*/ directions)
-        //    //    //{
-        //    //    //    int positionArray = Array.IndexOf(directions, direction);
-        //    //    //    int positionArrayNext = positionArray + 1;
-        //    //    //    int positionArrayPrevious = positionArray - 1;
-
-        //    //    //    Vector2Int nextDirection = directions.ElementAt(positionArrayNext);
-        //    //    //    Vector2Int previousDirection = directions.ElementAt(positionArrayPrevious);
-
-        //    //    //    var listPrevious = new MovementHelper<Position, Piece>(board, grid, piece, positionBoard).Move(previousDirection.x, previousDirection.y).Collect();
-        //    //    //    var listNext = new MovementHelper<Position, Piece>(board, grid, piece, positionBoard).Move(nextDirection.x, nextDirection.y).Collect();               
-
-        //    //    //    var list = new MovementHelper<Position, Piece>(board, grid, piece, positionBoard).Move(direction.x, direction.y).Collect();
-        //    //    //    if (list.Contains(positionBoard))
-        //    //    //    {
-
-        //    //    //        return list;
-        //    //    //    }
-
-        //    //    //    allPositions.AddRange(list);
-        //    //    //    allPositions.AddRange(listNext);
-        //    //    //    allPositions.AddRange(listPrevious);
-        //    //    //}
-        //    //    //return allPositions;
-
-        //    //var allPositions = new List<Position>();
-        //    //var list = new MovementHelper<Position, Piece>(board, grid, piece, positionBoard).NorthEastSpecific(1)
-        //    //    .EastSpecific(1)
-        //    //    .SouthEastSpecific(1)
-        //    //    .SouthWestSpecific(1)
-        //    //    .WestSpecific(1)
-        //    //    .NorthWestSpecific(1)
-        //    //    .Collect();
-        //    //if (list.Contains(positionBoard))
-        //    //{
-        //    //    return list;
-        //    //}
-        //    //allPositions.AddRange(list);
-        //    //return allPositions;
-        //}
 
         public override void Execute(Board<Position, Piece> board, Grid<Position> grid, Piece piece, Position position)
         {
@@ -164,22 +53,10 @@ namespace DAE.GameSystem.Cards
 
             (int x, int y) playerPosition = (coordinate.x, coordinate.y);
 
-            //if (!grid.TryGetPositionAt(coordinate.x, coordinate.y, out var playerPosition))
-            //{
-            //    Debug.Log("No playerposition");
-            //}
-            //return new List<Position>() { newPosition };
-            //else
-            //    return new List<Position>(0);
-
-
-
             List<Position> positions = Positions(board, grid, piece, position);
-            //List<Position> selectedPositions = SelectedPositions(board, grid, piece, position);
 
             foreach (Position availablePosition in positions)
             {
-
                 if (board.TryGetPieceAt(availablePosition, out var toPiece))
                 {
                     if (!board.TryGetPositionOf(toPiece, out var positionEnemy))
@@ -194,18 +71,6 @@ namespace DAE.GameSystem.Cards
 
                     (int x, int y) enemyPosition = (coordinateEnemy.x, coordinateEnemy.y);
 
-                    //int distanceX = playerPosition.x + playerPosition.x - enemyPosition.x;
-                    //int distanceY = playerPosition.y + playerPosition.y - enemyPosition.y;
-
-                    //int distanceX = enemyPosition.x + (playerPosition.x + enemyPosition.x);
-                    //int distanceY = enemyPosition.y + (playerPosition.y + enemyPosition.y);
-
-                    //int distanceX = playerPosition.x + (playerPosition.x + enemyPosition.x);
-                    //int distanceY = playerPosition.y + (playerPosition.y + enemyPosition.y);
-
-                    //Debug.Log($"{piece}: + {playerPosition}");
-                    //Debug.Log($"{toPiece} + {enemyPosition}");
-
                     int newPositionX = enemyPosition.x + (enemyPosition.x - playerPosition.x);
                     int newPositionY = enemyPosition.y + (enemyPosition.y - playerPosition.y);
 
@@ -216,7 +81,6 @@ namespace DAE.GameSystem.Cards
 
                     board.Move(toPiece, newPosition);
                 }
-
             }
         }
     }
