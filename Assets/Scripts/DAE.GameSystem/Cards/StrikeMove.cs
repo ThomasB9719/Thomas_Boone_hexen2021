@@ -11,7 +11,7 @@ namespace DAE.GameSystem.Cards
     {
         public StrikeMove(ReplayManager replayManager) : base(replayManager)
         {
-
+            ReplayManager = replayManager;
         }
 
         public override List<Position> Positions(Board<Position, Piece> board, Grid<Position> grid, Piece piece, Position positionBoard)

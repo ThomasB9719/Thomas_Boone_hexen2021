@@ -90,8 +90,8 @@ namespace DAE.HexesSystem.Moves
 
                 _validPositions.Add(nextPosition);
 
-                nextXCoordinate += /*coordinate.x +*/ xOffset;
-                nextYCoordinate += /*coordinate.y +*/ yOffset;
+                nextXCoordinate += xOffset;
+                nextYCoordinate += yOffset;
 
                 hasNextPosition = _grid.TryGetPositionAt(nextXCoordinate, nextYCoordinate, out nextPosition);
 

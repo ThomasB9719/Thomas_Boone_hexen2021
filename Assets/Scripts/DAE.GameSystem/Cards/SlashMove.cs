@@ -2,6 +2,7 @@
 using DAE.BoardSystem;
 using DAE.HexesSystem.Moves;
 using DAE.ReplaySystem;
+using UnityEngine;
 
 namespace DAE.GameSystem.Cards
 {
@@ -9,7 +10,7 @@ namespace DAE.GameSystem.Cards
     {
         public SlashMove(ReplayManager replayManager) : base(replayManager)
         {
-
+            ReplayManager = replayManager;
         }
 
         public override List<Position> Positions(Board<Position, Piece> board, Grid<Position> grid, Piece piece, Position positionBoard)
@@ -28,11 +29,12 @@ namespace DAE.GameSystem.Cards
             {
                 return new List<Position>()
                 {     
-                    allPositions[(index - 1) >= 0 ? index - 1 : allPositions.Count - 1  ],
+                    allPositions[(index - 1) >= 0 ? index - 1 : allPositions.Count - 1],
                     allPositions[index],
-                    allPositions[(index + 1) % allPositions.Count]
+                    allPositions[(index + 1) % allPositions.Count/* <= allPositions.Count - 1 ? index + 1 : 0*/]
                 }; 
             }
+            Debug.Log(allPositions.Count);
             return allPositions;
         }
 

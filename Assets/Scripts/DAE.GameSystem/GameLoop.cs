@@ -11,7 +11,6 @@ namespace DAE.GameSystem
 {
     class GameLoop : MonoBehaviour
     {
-        //public delegate void PieceAction(Piece piece);
         [SerializeField]
         private PositionHelper _positionHelper;
 
@@ -113,9 +112,6 @@ namespace DAE.GameSystem
             var pieces = FindObjectsOfType<Piece>();
             foreach (var piece in pieces)
             {
-                //if (piece.PieceType == PieceType.Player)
-                //    _playerPiece = piece;
-
                 var (x, y) = _positionHelper.ToGridPosition(grid, piece.transform.position);
                 if (grid.TryGetPositionAt(x, y, out var position))
                 {

@@ -11,11 +11,8 @@ using DAE.GameSystem.Cards;
 
 namespace DAE.GameSystem
 {
-
-    
     class Draggable: MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHandler
     {
-
         public bool dragOnSurfaces = true;
 
         private GameObject m_DraggingIcon;
@@ -24,7 +21,6 @@ namespace DAE.GameSystem
 
         [SerializeField]
         private HorizontalLayoutGroup _layOutGroup;
-
 
         private void Awake()
         {
