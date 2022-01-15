@@ -4,9 +4,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace DAE.BoardSystem { 
-
-    public class PlacedEventArgs<TPosition, TPiece>: EventArgs
+namespace DAE.BoardSystem
+{
+    public class PlacedEventArgs<TPosition, TPiece> : EventArgs
     {
         public TPosition ToPosition { get; }
         public TPiece Piece { get; }
@@ -46,7 +46,7 @@ namespace DAE.BoardSystem {
         }
     }
     public class Board<TPosition, TPiece>
-{
+    {
         public event EventHandler<PlacedEventArgs<TPosition, TPiece>> Placed;
         public event EventHandler<MovedEventArgs<TPosition, TPiece>> Moved;
         public event EventHandler<TakenEventArgs<TPosition, TPiece>> Taken;
@@ -61,7 +61,7 @@ namespace DAE.BoardSystem {
             }
 
             if (TryGetPositionOf(piece, out _))
-            { 
+            {
                 return false;
             }
 
@@ -74,7 +74,7 @@ namespace DAE.BoardSystem {
         public bool Move(TPiece piece, TPosition toPosition)
         {
             if (TryGetPieceAt(toPosition, out _))
-            return false;
+                return false;
 
             if (!TryGetPositionOf(piece, out var fromPosition))
                 return false;
@@ -84,11 +84,10 @@ namespace DAE.BoardSystem {
 
             _positionPiece.Add(toPosition, piece);
             OnMoved(new MovedEventArgs<TPosition, TPiece>(toPosition, fromPosition, piece));
-            
 
             return true;
         }
-        
+
         public bool Take(TPiece piece)
         {
             //is the piece in the dictionary?
@@ -100,36 +99,33 @@ namespace DAE.BoardSystem {
                 return false;
             if (!_positionPiece.Remove(piece))
                 return false;
-            
+
             OnTaken(new TakenEventArgs<TPosition, TPiece>(fromPosition, piece));
-            return true;          
+            return true;
         }
 
         public bool TryGetPieceAt(TPosition position, out TPiece piece)
             => _positionPiece.TryGetValue(position, out piece);
 
-
         public bool TryGetPositionOf(TPiece piece, out TPosition position)
             => _positionPiece.TryGetKey(piece, out position);
-        
+
         protected virtual void OnPlaced(PlacedEventArgs<TPosition, TPiece> eventArgs)
         {
             var handler = Placed;
             handler?.Invoke(this, eventArgs);
         }
-        
+
         protected virtual void OnMoved(MovedEventArgs<TPosition, TPiece> eventArgs)
         {
             var handler = Moved;
             handler?.Invoke(this, eventArgs);
         }
-        
+
         protected virtual void OnTaken(TakenEventArgs<TPosition, TPiece> eventArgs)
         {
             var handler = Taken;
             handler?.Invoke(this, eventArgs);
-        } 
-    
-}
-
+        }
+    }
 }

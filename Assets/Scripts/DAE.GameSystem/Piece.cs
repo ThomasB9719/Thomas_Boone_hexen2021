@@ -37,8 +37,6 @@ class Piece: MonoBehaviour, IPointerClickHandler, IPiece
 
     //public int PlayerID => _playerID;
 
-    //public string Name => gameObject.name;
-
     public bool Moved { get; set; }
 
     public PieceType PieceType => _pieceType;
@@ -49,8 +47,6 @@ class Piece: MonoBehaviour, IPointerClickHandler, IPiece
     public void OnPointerClick(PointerEventData eventData)
     {
         //Debug.Log($"Clicked { gameObject.name}");
-        //Callback(this);
-
         OnClicked(this, new PieceEventArgs(this));
     }
 

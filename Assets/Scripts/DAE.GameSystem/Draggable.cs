@@ -13,7 +13,7 @@ namespace DAE.GameSystem
 {
     class Draggable: MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHandler
     {
-        public bool dragOnSurfaces = true;
+        public bool DragOnSurfaces = true;
 
         private GameObject m_DraggingIcon;
         private RectTransform m_DraggingPlane;
@@ -34,31 +34,19 @@ namespace DAE.GameSystem
             if (canvas == null)
                 return;
 
-            // We have clicked something that can be dragged.
-            // What we want to do is create an icon for this.
-            //m_DraggingIcon = new GameObject("icon");
-            m_DraggingIcon = gameObject;
-            
+            m_DraggingIcon = gameObject;            
             m_DraggingIcon.GetComponent<Image>().raycastTarget = false;
 
             m_DraggingIcon.transform.SetParent(canvas.transform, false);
-            //m_DraggingIcon.transform.SetParent(this.transform, true);
             m_DraggingIcon.transform.SetAsLastSibling();
-
-            //var image = m_DraggingIcon.AddComponent<Image>();
-
-            //image.sprite = GetComponent<Image>().sprite;
             m_canvasGroup.alpha = 0.5f;
-            //image.SetNativeSize();
 
-            if (dragOnSurfaces)
+            if (DragOnSurfaces)
             {
                 m_DraggingPlane = transform as RectTransform;
             }
             else
                 m_DraggingPlane = canvas.transform as RectTransform;
-
-            
 
             SetDraggedPosition(eventData);
         }
@@ -71,7 +59,7 @@ namespace DAE.GameSystem
 
         private void SetDraggedPosition(PointerEventData data)
         {
-            if (dragOnSurfaces && data.pointerEnter != null && data.pointerEnter.transform as RectTransform != null)
+            if (DragOnSurfaces && data.pointerEnter != null && data.pointerEnter.transform as RectTransform != null)
                 m_DraggingPlane = data.pointerEnter.transform as RectTransform;
 
             var rectTransform = m_DraggingIcon.GetComponent<RectTransform>();
@@ -90,9 +78,7 @@ namespace DAE.GameSystem
                 m_DraggingIcon.GetComponent<Image>().raycastTarget = true;
                 m_DraggingIcon.transform.SetParent(_layOutGroup.transform, true);
                 m_canvasGroup.alpha = 1f;
-            }
-
-            
+            }      
         }
 
         static public T FindInParents<T>(GameObject go) where T : Component

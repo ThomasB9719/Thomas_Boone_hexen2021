@@ -12,7 +12,7 @@ namespace DAE.GameSystem
 
         public (int x, int y) ToGridPosition(Grid<Position> grid, Vector3 worldPosition)
         {
-            float hexRadius = /*0.5f*/2f;
+            float hexRadius = 2f;
 
             var q = (Mathf.Sqrt(3f)/3f * worldPosition.x - 1f/3f * worldPosition.z)/ hexRadius;
             var r = (2f / 3f * worldPosition.z) / hexRadius;
@@ -22,7 +22,7 @@ namespace DAE.GameSystem
 
         public Vector3 ToWorldPosition(Grid<Position> grid, int q, int r)
         {
-            float hexRadius = /*0.5f*/2f;
+            float hexRadius = 2f;
 
             var x = hexRadius * (Mathf.Sqrt(3f) * q + Mathf.Sqrt(3f) / 2f * r);
             var z = hexRadius * (3f / 2f * r);

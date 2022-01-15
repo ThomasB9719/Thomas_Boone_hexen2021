@@ -83,15 +83,15 @@ namespace DAE.GameSystem
             };
         }
 
-        public void Forward()
-        {
-            _gameStateMachine.CurrentState.Forward();
-        }
+        //public void Forward()
+        //{
+        //    _gameStateMachine.CurrentState.Forward();
+        //}
 
-        public void Backward()
-        {
-            _gameStateMachine.CurrentState.Backward();
-        }
+        //public void Backward()
+        //{
+        //    _gameStateMachine.CurrentState.Backward();
+        //}
 
         private void ConnectGrid(Grid<Position> grid)
         {

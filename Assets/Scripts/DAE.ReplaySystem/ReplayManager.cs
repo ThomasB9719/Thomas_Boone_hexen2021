@@ -41,7 +41,6 @@ namespace DAE.ReplaySystem
 
                 return true;
             }
-
             return false;
         }
 

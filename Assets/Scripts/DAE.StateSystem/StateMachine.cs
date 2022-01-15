@@ -48,13 +48,11 @@ namespace DAE.StateSystem
 
         public void Register(string stateName, TState state)
         {
-            //extra
             if (_states.ContainsKey(stateName))
             {
                 throw new ArgumentException($"{nameof(stateName)} already exists");
             }
             _states[stateName] = state;
         }
-
     }
 }

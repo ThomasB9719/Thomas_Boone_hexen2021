@@ -8,11 +8,6 @@ namespace DAE.GameSystem.Cards
 {
     class SlashMove : CardBase
     {
-        public SlashMove(ReplayManager replayManager) : base(replayManager)
-        {
-            ReplayManager = replayManager;
-        }
-
         public override List<Position> Positions(Board<Position, Piece> board, Grid<Position> grid, Piece piece, Position positionBoard)
         {
             var  allPositions = new MovementHelper<Position, Piece>(board, grid, piece, positionBoard)

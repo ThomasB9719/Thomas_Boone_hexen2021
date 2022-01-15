@@ -26,16 +26,6 @@ namespace DAE.GameSystem.GameStates
 
         }
 
-        //public virtual void Select()
-        //{
-            //chess example: select piece and position
-        //}
-
-        //public virtual void Deselect()
-        //{
-            //chess example: deselect piece
-        //}
-
         internal virtual void Forward()
         {
 
