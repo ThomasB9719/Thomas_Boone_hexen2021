@@ -72,9 +72,13 @@ namespace DAE.GameSystem.Cards
                     if (!grid.TryGetPositionAt(newPositionX, newPositionY, out Position newPosition))
                     {
                         Debug.Log("No distancePosition");
+                        board.Take(toPiece);
+                    }
+                    else
+                    {
+                        board.Move(toPiece, newPosition);
                     }
 
-                    board.Move(toPiece, newPosition);
                 }
             }
         }
