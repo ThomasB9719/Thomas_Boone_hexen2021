@@ -146,10 +146,6 @@ namespace DAE.HexesSystem.Moves
 
             while (hasNextPosition && step < numTiles)
             {
-                //var isOk = validators.All((v) => v(_board, _grid, _piece, nextPosition));
-                //if (!isOk)
-                //    return this;
-
                 _validPositions.Add(nextPosition);
 
                 nextXCoordinate += xOffset;
@@ -166,11 +162,5 @@ namespace DAE.HexesSystem.Moves
         {
             return _validPositions;
         }
-
-        //public static bool IsEmptyTile(Board<TPosition, TPiece> board, Grid<TPosition> grid, TPiece piece, TPosition position)
-        //    => !board.TryGetPieceAt(position, out _);
-
-        //public static bool HasEnemyPiece(Board<TPosition, TPiece> board, Grid<TPosition> grid, TPiece piece, TPosition position)
-        //    => board.TryGetPieceAt(position, out var enemyPiece);
     }
 }

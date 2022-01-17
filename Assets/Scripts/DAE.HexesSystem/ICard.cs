@@ -8,8 +8,7 @@ using System.Threading.Tasks;
 namespace DAE.HexesSystem
 {
     public interface ICard<TPosition, TPiece>
-    {
-        
+    {        
         bool InHand { get; set; }
 
         void Remove();

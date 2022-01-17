@@ -21,9 +21,6 @@ class Piece: MonoBehaviour, IPointerClickHandler, IPiece
     [SerializeField]
     private HighLightEvent _onHighlight;
 
-    //[SerializeField]
-    //private int _playerID;
-
     [SerializeField]
     private PieceType _pieceType;
 
@@ -35,18 +32,14 @@ class Piece: MonoBehaviour, IPointerClickHandler, IPiece
         }
     }
 
-    //public int PlayerID => _playerID;
-
     public bool Moved { get; set; }
 
     public PieceType PieceType => _pieceType;
 
-    //public event Action<Piece> Callback;
     public event EventHandler<PieceEventArgs> Clicked;
     
     public void OnPointerClick(PointerEventData eventData)
     {
-        //Debug.Log($"Clicked { gameObject.name}");
         OnClicked(this, new PieceEventArgs(this));
     }
 
@@ -59,10 +52,6 @@ class Piece: MonoBehaviour, IPointerClickHandler, IPiece
     {
         var handle = Clicked;
         handle?.Invoke(this, e);
-
-        //doing the same, but in another way
-        //if (handle != null)
-        //    handle.Invoke(this, e);
     }
 
     public void MoveTo(Vector3 worldPosition)
