@@ -200,7 +200,7 @@ GameObject:
   - component: {fileID: 171481275}
   - component: {fileID: 171481274}
   m_Layer: 5
-  m_Name: Backward Text
+  m_Name: Game Over Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -247,7 +247,7 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 14
+    m_FontSize: 36
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 10
@@ -258,9 +258,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Backward
-
-'
+  m_Text: Game Over
 --- !u!222 &171481275
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -344,12 +342,12 @@ GameObject:
   - component: {fileID: 449745877}
   - component: {fileID: 449745876}
   m_Layer: 5
-  m_Name: Forward Button
+  m_Name: To PlayState Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &449745875
 RectTransform:
   m_ObjectHideFlags: 0
@@ -365,10 +363,10 @@ RectTransform:
   m_Father: {fileID: 1408373589}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 1, y: 1}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -100, y: -33}
-  m_SizeDelta: {x: 160, y: 30}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 200, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &449745876
 MonoBehaviour:
@@ -416,8 +414,20 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 464441886}
         m_TargetAssemblyTypeName: DAE.GameSystem.GameLoop, DAE.GameSystem
-        m_MethodName: Forward
+        m_MethodName: ToPlayState
         m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 449745874}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -502,6 +512,7 @@ MonoBehaviour:
   - {fileID: 8094608409312434533, guid: 2968ed207fff6ae439cbbe331abc4caf, type: 3}
   - {fileID: 3301446723553280996, guid: bfa365f5534d9024f8a66cfae32311cb, type: 3}
   _playerPiece: {fileID: 1719561210}
+  EndScreen: {fileID: 1511406691}
 --- !u!4 &464441887
 Transform:
   m_ObjectHideFlags: 0
@@ -1089,7 +1100,7 @@ GameObject:
   - component: {fileID: 1511406692}
   - component: {fileID: 1511406691}
   m_Layer: 5
-  m_Name: Backward Button
+  m_Name: EndState Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1110,10 +1121,10 @@ RectTransform:
   m_Father: {fileID: 1408373589}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 1, y: 1}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -100, y: -83}
-  m_SizeDelta: {x: 160, y: 30}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 200, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1511406691
 MonoBehaviour:
@@ -1221,7 +1232,7 @@ GameObject:
   - component: {fileID: 1515414756}
   - component: {fileID: 1515414755}
   m_Layer: 5
-  m_Name: Forward Text
+  m_Name: Start
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1268,18 +1279,19 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 14
+    m_FontSize: 36
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 10
-    m_MaxSize: 40
+    m_MaxSize: 44
     m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Forward
+  m_Text: 'Start
+
 
 '
 --- !u!222 &1515414756

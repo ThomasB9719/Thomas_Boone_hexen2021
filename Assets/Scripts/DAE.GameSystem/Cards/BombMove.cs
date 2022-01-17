@@ -1,4 +1,5 @@
 ﻿using DAE.BoardSystem;
+using DAE.GameSystem.GameStates;
 using DAE.HexesSystem.Moves;
 using System;
 using System.Collections.Generic;
@@ -11,6 +12,7 @@ namespace DAE.GameSystem.Cards
 {
     class BombMove: CardBase
     {
+        public GameLoop GameLoop { get; set; }
         public override List<Position> Positions(Board<Position, Piece> board, Grid<Position> grid, Piece piece, Position positionBoard)
         {
             //List<Position> allPositions = new List<Position>();
@@ -45,6 +47,10 @@ namespace DAE.GameSystem.Cards
                     {
                         Debug.Log("Player tasks");
                         board.Take(toPiece);
+
+                        GameLoop gameLoop = FindObjectOfType<GameLoop>().GetComponent<GameLoop>();
+                        gameLoop._gameStateMachine.MoveState(GameState.EndState);
+                        gameLoop.EndScreen.gameObject.SetActive(true);
                     }
                     else
                     {

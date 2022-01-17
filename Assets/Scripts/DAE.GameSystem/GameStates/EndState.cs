@@ -1,19 +1,19 @@
 ﻿using DAE.BoardSystem;
 using DAE.StateSystem;
-using UnityEngine;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UnityEngine;
 
 namespace DAE.GameSystem.GameStates
 {
-    class GamePlayState: GameStateBase
+    class EndState: GameStateBase
     {
         private Board<Position, Piece> _board;
 
-        public GamePlayState(StateMachine<GameStateBase> stateMachine, Board<Position, Piece> board): base(stateMachine)
+        public EndState(StateMachine<GameStateBase> stateMachine, Board<Position, Piece> board) : base(stateMachine)
         {
             _board = board;
         }
@@ -21,7 +21,7 @@ namespace DAE.GameSystem.GameStates
         public override void OnEnter()
         {
             base.OnEnter();
-            Debug.Log("We entered GamePlayState");
+            Debug.Log("We entered EndState");
         }
 
         public override void OnExit()
@@ -29,9 +29,9 @@ namespace DAE.GameSystem.GameStates
             base.OnExit();
         }
 
-        internal override void Backward()
-        {
-            StateMachine.MoveState(GameState.ReplayState);
-        }
+        //internal override void ToEndState()
+        //{
+        //    StateMachine.MoveState(GameState.EndState);
+        //}
     }
 }
