@@ -20,7 +20,7 @@ namespace DAE.GameSystem
 
         [SerializeField]
         private List<CardBase> _cardTypes;
-        
+
         [SerializeField]
         private Piece _playerPiece;
 
@@ -29,9 +29,10 @@ namespace DAE.GameSystem
         private int _maxNumberOfCards = 20;
         private Grid<Position> _grid;
         private Board<Position, Piece> _board;
-        private Deck<Position,Piece, CardBase> _deck;
+        private Deck<Position, Piece, CardBase> _deck;
         private CardBase _selectedCard;
         public StateMachine<GameStateBase> _gameStateMachine;
+        private GameStateBase _playState;
 
         public void Start()
         {
@@ -41,13 +42,11 @@ namespace DAE.GameSystem
 
             _gameStateMachine = new StateMachine<GameStateBase>();
 
-            var replayManager = new ReplayManager();
-
             var startState = new StartState(_gameStateMachine, _board);
             _gameStateMachine.Register(GameState.StartState, startState);
 
-            var playState = new PlayState(_gameStateMachine, _board);
-            _gameStateMachine.Register(GameState.PlayState, playState);
+            _playState = new PlayState(_gameStateMachine, _board);
+            _gameStateMachine.Register(GameState.PlayState, _playState);
 
             var endState = new EndState(_gameStateMachine, _board);
             _gameStateMachine.Register(GameState.EndState, endState);
@@ -58,7 +57,7 @@ namespace DAE.GameSystem
             ConnectPiece(_grid, _board);
             GenerateCards();
 
-            _deck.FillHand();
+            //_deck.FillHand();
 
             _board.Moved += (s, e) =>
             {
@@ -95,16 +94,16 @@ namespace DAE.GameSystem
             //GenerateCards();
         }
 
-        //public void Backward()
-        //{
-        //    _gameStateMachine.CurrentState.Backward();
-        //}
+        public void FillHand()
+        {
+            _deck.FillHand();
+        }
 
         public void GenerateCards()
         {
-            for(int i = 0; i < _maxNumberOfCards; i++)
+            for (int i = 0; i < _maxNumberOfCards; i++)
             {
-                var cardType = UnityEngine.Random.Range(0, _cardTypes.Count /*- 1*/);
+                var cardType = UnityEngine.Random.Range(0, _cardTypes.Count);
                 var card = Instantiate<CardBase>(_cardTypes[cardType], _cardContainer);
 
                 card.Dragged += (s, e) => Dragged(e.Card);
@@ -117,7 +116,7 @@ namespace DAE.GameSystem
         {
             var positions = FindObjectsOfType<Position>();
             foreach (var position in positions)
-            {               
+            {
                 position.Exited += (s, e) => Exited(e.Position);
                 position.Entered += (s, e) => Entered(e.Position);
                 position.Dropped += (s, e) => DroppedAt(e.Position);
@@ -139,7 +138,7 @@ namespace DAE.GameSystem
                     //Debug.Log($"{ piece} + {position}");
                 }
             }
-        }    
+        }
 
         private void Dragged(CardBase card)
         {

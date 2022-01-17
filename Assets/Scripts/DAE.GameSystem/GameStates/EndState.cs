@@ -28,10 +28,5 @@ namespace DAE.GameSystem.GameStates
         {
             base.OnExit();
         }
-
-        //internal override void ToEndState()
-        //{
-        //    StateMachine.MoveState(GameState.EndState);
-        //}
     }
 }

@@ -46,9 +46,6 @@ namespace DAE.GameSystem.GameStates
             if (!_playerPiece)
                 return;
 
-            //if (_playerPiece.PieceType != PieceType.Player)
-            //    return;
-
             var validPositions = _selectedCard.Positions(_board, _grid, _playerPiece, position);
             foreach (var validPosition in validPositions)
                 validPosition.Activated();
@@ -65,9 +62,6 @@ namespace DAE.GameSystem.GameStates
 
             if (!_playerPiece)
                 return;
-
-            //if (_playerPiece.PieceType != PieceType.Player)
-            //    return;
 
             var validPositions = _selectedCard.Positions(_board, _grid, _playerPiece, position);
             foreach (var validPosition in validPositions)
@@ -87,9 +81,6 @@ namespace DAE.GameSystem.GameStates
             if (!_playerPiece)
                 return;
 
-            //if (_playerPiece.PieceType != PieceType.Player)
-            //    return;
-
             var validPositions = _selectedCard.Positions(_board, _grid, _playerPiece, position);
             foreach (var validPosition in validPositions)
                 validPosition.Deactivated();
@@ -97,7 +88,6 @@ namespace DAE.GameSystem.GameStates
             if (validPositions.Contains(position))
                 deck.Move(_selectedCard, _playerPiece, position);
 
-            //_selectedCard.MoveToDiscardPile(_selectedCard);
             _selectedCard = null;
         }
 
