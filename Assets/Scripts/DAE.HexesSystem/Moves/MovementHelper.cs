@@ -40,9 +40,19 @@ namespace DAE.HexesSystem.Moves
             return Move(0, 1, numTiles, validators);
         }
 
+        public MovementHelper<TPosition, TPiece> SouthEastBomb(TPosition position, int numTiles = int.MaxValue, params Validator[] validators)
+        {
+            return MoveBomb(0, 1, position, numTiles, validators);
+        }
+
         public MovementHelper<TPosition, TPiece> East(int numTiles = int.MaxValue, params Validator[] validators)
         {
             return Move(1, 0, numTiles, validators);
+        }
+
+        public MovementHelper<TPosition, TPiece> EastBomb(TPosition position, int numTiles = int.MaxValue, params Validator[] validators)
+        {
+            return MoveBomb(1, 0, position, numTiles, validators);
         }
 
         public MovementHelper<TPosition, TPiece> NorthEast(int numTiles = int.MaxValue, params Validator[] validators)
@@ -50,9 +60,19 @@ namespace DAE.HexesSystem.Moves
             return Move(1, -1, numTiles, validators);
         }
 
+        public MovementHelper<TPosition, TPiece> NorthEastBomb(TPosition position, int numTiles = int.MaxValue, params Validator[] validators)
+        {
+            return MoveBomb(1, -1, position, numTiles, validators);
+        }
+
         public MovementHelper<TPosition, TPiece> NorthWest(int numTiles = int.MaxValue, params Validator[] validators)
         {
             return Move(0, -1, numTiles, validators);
+        }
+
+        public MovementHelper<TPosition, TPiece> NorthWestBomb(TPosition position, int numTiles = int.MaxValue, params Validator[] validators)
+        {
+            return MoveBomb(0, -1, position, numTiles, validators);
         }
 
         public MovementHelper<TPosition, TPiece> West(int numTiles = int.MaxValue, params Validator[] validators)
@@ -60,9 +80,19 @@ namespace DAE.HexesSystem.Moves
             return Move(-1, 0, numTiles, validators);
         }
 
+        public MovementHelper<TPosition, TPiece> WestBomb(TPosition position, int numTiles = int.MaxValue, params Validator[] validators)
+        {
+            return MoveBomb(-1, 0, position, numTiles, validators);
+        }
+
         public MovementHelper<TPosition, TPiece> SouthWest(int numTiles = int.MaxValue, params Validator[] validators)
         {
             return Move(-1, 1, numTiles, validators);
+        }
+
+        public MovementHelper<TPosition, TPiece> SouthWestBomb(TPosition position, int numTiles = int.MaxValue, params Validator[] validators)
+        {
+            return MoveBomb(-1, 1, position, numTiles, validators);
         }
 
         public delegate bool Validator(Board<TPosition, TPiece> board, Grid<TPosition> grid, TPiece piece, TPosition position);
@@ -87,6 +117,38 @@ namespace DAE.HexesSystem.Moves
                 var isOk = validators.All((v) => v(_board, _grid, _piece, nextPosition));
                 if (!isOk)
                     return this;
+
+                _validPositions.Add(nextPosition);
+
+                nextXCoordinate += xOffset;
+                nextYCoordinate += yOffset;
+
+                hasNextPosition = _grid.TryGetPositionAt(nextXCoordinate, nextYCoordinate, out nextPosition);
+
+                step++;
+            }
+            return this;
+        }
+
+        public MovementHelper<TPosition, TPiece> MoveBomb(int xOffset, int yOffset, TPosition position, int numTiles = int.MaxValue, params Validator[] validators)
+        {
+            _position = position;
+
+            if (!_grid.TryGetCoordinateOf(_position, out var coordinate))
+                return this;
+
+            var nextXCoordinate = coordinate.x + xOffset;
+            var nextYCoordinate = coordinate.y + yOffset;
+
+            var hasNextPosition = _grid.TryGetPositionAt(nextXCoordinate, nextYCoordinate, out var nextPosition);
+
+            int step = 0;
+
+            while (hasNextPosition && step < numTiles)
+            {
+                //var isOk = validators.All((v) => v(_board, _grid, _piece, nextPosition));
+                //if (!isOk)
+                //    return this;
 
                 _validPositions.Add(nextPosition);
 

@@ -500,6 +500,7 @@ MonoBehaviour:
   - {fileID: 3396109809810969220, guid: dac4bcc0386ee7c4785281453cce3e50, type: 3}
   - {fileID: 756882406840303432, guid: af9aaa00fc099db4bb143ae2826c2a1a, type: 3}
   - {fileID: 8094608409312434533, guid: 2968ed207fff6ae439cbbe331abc4caf, type: 3}
+  - {fileID: 3301446723553280996, guid: bfa365f5534d9024f8a66cfae32311cb, type: 3}
   _playerPiece: {fileID: 1719561210}
 --- !u!4 &464441887
 Transform:
