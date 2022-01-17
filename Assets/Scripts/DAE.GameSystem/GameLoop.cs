@@ -5,7 +5,6 @@ using DAE.HexesSystem;
 using DAE.GameSystem.Cards;
 using DAE.GameSystem.GameStates;
 using DAE.StateSystem;
-using DAE.ReplaySystem;
 using UnityEngine.UI;
 
 namespace DAE.GameSystem
@@ -31,7 +30,7 @@ namespace DAE.GameSystem
         private Board<Position, Piece> _board;
         private Deck<Position, Piece, CardBase> _deck;
         private CardBase _selectedCard;
-        public StateMachine<GameStateBase> _gameStateMachine;
+        public StateMachine<GameStateBase> GameStateMachine;
         private GameStateBase _playState;
 
         public void Start()
@@ -40,24 +39,22 @@ namespace DAE.GameSystem
             _board = new Board<Position, Piece>();
             _deck = new Deck<Position, Piece, CardBase>(_board, _grid);
 
-            _gameStateMachine = new StateMachine<GameStateBase>();
+            GameStateMachine = new StateMachine<GameStateBase>();
 
-            var startState = new StartState(_gameStateMachine, _board);
-            _gameStateMachine.Register(GameState.StartState, startState);
+            var startState = new StartState(GameStateMachine, _board);
+            GameStateMachine.Register(GameState.StartState, startState);
 
-            _playState = new PlayState(_gameStateMachine, _board);
-            _gameStateMachine.Register(GameState.PlayState, _playState);
+            _playState = new PlayState(GameStateMachine, _board);
+            GameStateMachine.Register(GameState.PlayState, _playState);
 
-            var endState = new EndState(_gameStateMachine, _board);
-            _gameStateMachine.Register(GameState.EndState, endState);
+            var endState = new EndState(GameStateMachine, _board);
+            GameStateMachine.Register(GameState.EndState, endState);
 
-            _gameStateMachine.InitialState = GameState.StartState;
+            GameStateMachine.InitialState = GameState.StartState;
 
             ConnectGrid(_grid);
             ConnectPiece(_grid, _board);
             GenerateCards();
-
-            //_deck.FillHand();
 
             _board.Moved += (s, e) =>
             {
@@ -90,8 +87,7 @@ namespace DAE.GameSystem
 
         public void ToPlayState()
         {
-            _gameStateMachine.MoveState(GameState.PlayState);
-            //GenerateCards();
+            GameStateMachine.MoveState(GameState.PlayState);
         }
 
         public void FillHand()
@@ -135,7 +131,6 @@ namespace DAE.GameSystem
                 if (grid.TryGetPositionAt(x, y, out var position))
                 {
                     board.Place(piece, position);
-                    //Debug.Log($"{ piece} + {position}");
                 }
             }
         }
@@ -147,52 +142,26 @@ namespace DAE.GameSystem
 
         private void DroppedAt(Position position)
         {
-            //if (_selectedCard == null)
-            //    return;
+            if (GameStateMachine.CurrentState != _playState)
+                return;
 
-            //if (!_playerPiece)
-            //    return;
-
-            //var validPositions = _selectedCard.Positions(_board, _grid, _playerPiece, position);
-            //foreach (var validPosition in validPositions)
-            //    validPosition.Deactivated();
-
-            //if (validPositions.Contains(position))
-            //    _deck.Move(_selectedCard, _playerPiece, position);
-
-            //_selectedCard = null;
-
-            _gameStateMachine.CurrentState.DroppedAt(position, _deck, _selectedCard, _playerPiece, _grid);
+            GameStateMachine.CurrentState.DroppedAt(position, _deck, _selectedCard, _playerPiece, _grid);
         }
 
         private void Entered(Position position)
         {
-            //if (_selectedCard == null)
-            //    return;
+            if (GameStateMachine.CurrentState != _playState)
+                return;
 
-            //if (!_playerPiece)
-            //    return;
-
-            //var validPositions = _selectedCard.Positions(_board, _grid, _playerPiece, position);
-            //foreach (var validPosition in validPositions)
-            //    validPosition.Activated();
-
-            _gameStateMachine.CurrentState.Entered(position, _selectedCard, _playerPiece, _grid);
+            GameStateMachine.CurrentState.Entered(position, _selectedCard, _playerPiece, _grid);
         }
 
         private void Exited(Position position)
         {
-            //if (_selectedCard == null)
-            //    return;
+            if (GameStateMachine.CurrentState != _playState)
+                return;
 
-            //if (!_playerPiece)
-            //    return;
-
-            //var validPositions = _selectedCard.Positions(_board, _grid, _playerPiece, position);
-            //foreach (var validPosition in validPositions)
-            //    validPosition.Deactivated();
-
-            _gameStateMachine.CurrentState.Exited(position, _selectedCard, _playerPiece, _grid);
+            GameStateMachine.CurrentState.Exited(position, _selectedCard, _playerPiece, _grid);
         }
     }
 }

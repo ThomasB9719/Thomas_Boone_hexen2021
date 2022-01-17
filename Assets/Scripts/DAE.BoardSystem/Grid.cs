@@ -26,7 +26,6 @@ namespace DAE.BoardSystem
 
         public void Register(int x, int y, TPosition position)
         {
-            //Debug.Log($"{x} , {y}");
             _positions.Add((x, y), position);
         }
     }

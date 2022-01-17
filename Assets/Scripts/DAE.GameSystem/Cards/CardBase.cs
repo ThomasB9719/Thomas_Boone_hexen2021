@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using DAE.BoardSystem;
 using DAE.HexesSystem;
-using DAE.ReplaySystem;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -38,10 +37,7 @@ namespace DAE.GameSystem.Cards
 
         public virtual void Execute(Board<Position, Piece> board, Grid<Position> grid, Piece piece, Position position)
         {
-            //if (board.TryGetPieceAt(position, out var toPiece))
-            //    board.Take(toPiece);
-
-            //board.Move(piece, position);      
+     
         }
 
         public abstract List<Position> Positions(Board<Position, Piece> board, Grid<Position> grid, Piece piece, Position position);

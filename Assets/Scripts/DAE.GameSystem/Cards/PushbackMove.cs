@@ -4,7 +4,6 @@ using DAE.HexesSystem.Moves;
 using UnityEngine;
 using System.Linq;
 using System;
-using DAE.ReplaySystem;
 
 namespace DAE.GameSystem.Cards
 {

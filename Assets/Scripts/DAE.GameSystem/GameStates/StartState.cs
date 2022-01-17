@@ -1,4 +1,6 @@
 ﻿using DAE.BoardSystem;
+using DAE.GameSystem.Cards;
+using DAE.HexesSystem;
 using DAE.StateSystem;
 using System;
 using System.Collections.Generic;

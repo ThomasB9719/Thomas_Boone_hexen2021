@@ -12,15 +12,8 @@ namespace DAE.GameSystem.Cards
 {
     class BombMove: CardBase
     {
-        public GameLoop GameLoop { get; set; }
         public override List<Position> Positions(Board<Position, Piece> board, Grid<Position> grid, Piece piece, Position positionBoard)
         {
-            //List<Position> allPositions = new List<Position>();
-            //allPositions.Add(positionBoard);
-
-            //if (board.TryGetPieceAt(positionBoard, out var toPiece))
-            //    allPositions.Remove(positionBoard);
-
             var allPositions = new MovementHelper<Position, Piece>(board, grid, piece, positionBoard)
                 .NorthEastBomb(positionBoard, 1)
                 .EastBomb(positionBoard, 1)
@@ -49,7 +42,7 @@ namespace DAE.GameSystem.Cards
                         board.Take(toPiece);
 
                         GameLoop gameLoop = FindObjectOfType<GameLoop>().GetComponent<GameLoop>();
-                        gameLoop._gameStateMachine.MoveState(GameState.EndState);
+                        gameLoop.GameStateMachine.MoveState(GameState.EndState);
                         gameLoop.EndScreen.gameObject.SetActive(true);
                     }
                     else

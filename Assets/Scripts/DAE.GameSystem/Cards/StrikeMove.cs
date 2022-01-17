@@ -2,7 +2,6 @@
 using DAE.BoardSystem;
 using DAE.GameSystem;
 using DAE.HexesSystem.Moves;
-using DAE.ReplaySystem;
 using UnityEngine;
 
 namespace DAE.GameSystem.Cards

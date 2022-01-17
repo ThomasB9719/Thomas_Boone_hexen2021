@@ -90,11 +90,6 @@ namespace DAE.BoardSystem
 
         public bool Take(TPiece piece)
         {
-            //is the piece in the dictionary?
-            //remove it
-            //return true
-            //else return false
-
             if (!TryGetPositionOf(piece, out var fromPosition))
                 return false;
             if (!_positionPiece.Remove(piece))
